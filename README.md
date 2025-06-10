@@ -1,6 +1,6 @@
 # ZTools
 
-ZTools is a collection of PowerShell scripts and utilities I use for day-to-day tasks at work. The repository is currently a skeleton that will be populated with organized tools over time.
+ZTools is a collection of PowerShell utilities and experimental TypeScript agents used for automation tasks. The repository is currently a skeleton that will be populated with organized tools over time.
 
 ## Project Goals
 
@@ -12,18 +12,20 @@ ZTools is a collection of PowerShell scripts and utilities I use for day-to-day 
 
 ```
 ZTools/
-├── scripts/       # Standalone PowerShell scripts
-├── modules/       # Reusable PowerShell modules
+├── src/           # PowerShell scripts and modules
+├── agents/        # TypeScript agent scripts
+├── AGENTS.md      # Contribution guidelines
 ├── LICENSE        # MIT License
 └── README.md      # Project documentation
 ```
 
 *This layout may evolve as more tools are added.*
-These directories will be added as tools are introduced.
+The `agents/` folder hosts TypeScript code while `src/` is reserved for PowerShell utilities.
 
 ## Prerequisites
 
 - Windows PowerShell 5.1 or [PowerShell](https://github.com/PowerShell/PowerShell) 7+
+- [Node.js](https://nodejs.org/) for running the TypeScript agents
 
 ## Getting Started
 
@@ -32,7 +34,9 @@ These directories will be added as tools are introduced.
    git clone <repo-url>
    cd ZTools
    ```
-2. **Browse the tools** in the `scripts` and `modules` directories once they are added.
+2. **Browse the tools**
+   - PowerShell scripts are under `src/`
+   - TypeScript agents are under `agents/`
 
 ## Contributing
 
