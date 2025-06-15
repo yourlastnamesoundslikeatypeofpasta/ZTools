@@ -1,57 +1,128 @@
-<##
-.SYNOPSIS
-Checks for required PowerShell modules and PowerShell version.
-.DESCRIPTION
-Ensures that all required modules are installed and that PowerShell 7 or higher is available.
-Outputs status messages using the Write-Status function.
-#>
-
-param()
-
-# Dot source the Write-Status function from the src directory
-$repoRoot = Split-Path -Path $PSScriptRoot -Parent
-$writeStatusPath = Join-Path -Path $repoRoot -ChildPath 'src/Write-Status.ps1'
-try {
-    . $writeStatusPath
-} catch {
-    Write-Error "Failed to load Write-Status from $writeStatusPath"
-    exit 1
-}
-
-$requiredModules = @('Pester')
-$missingModules  = @()
-
-try {
-    if ($PSVersionTable.PSVersion.Major -lt 7) {
-        Write-Status -Level ERROR -Message 'PowerShell 7 or higher is required.'
-        exit 1
-    } else {
-        Write-Status -Level SUCCESS -Message "PowerShell version $($PSVersionTable.PSVersion) detected."
-    }
-} catch {
-    Write-Status -Level ERROR -Message $_.Exception.Message
-    exit 1
-}
-
-foreach ($module in $requiredModules) {
-    try {
-        if (Get-Module -ListAvailable -Name $module) {
-            Write-Status -Level SUCCESS -Message "Module '$module' is installed."
-        } else {
-            Write-Status -Level ERROR -Message "Required module '$module' is missing."
-            $missingModules += $module
+function Test-WriteStatusModulePath {
+    [CmdletBinding()]
+    param()
+    process {
+        $writeStatusPath = Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath '..') -ChildPath 'src/Write-Status.ps1'
+        try {
+            $resolvedPath = Resolve-Path -Path $writeStatusPath -ErrorAction Stop
+            Write-Output $resolvedPath
+        } catch {
+            Write-Error "Failed to resolve Write-Status path at $writeStatusPath"
+            throw
         }
-    } catch {
-        Write-Status -Level ERROR -Message "Failed to check module '$module'. $_"
-        exit 1
     }
 }
 
-if ($missingModules.Count -gt 0) {
-    $list = $missingModules -join ', '
-    Write-Status -Level ERROR -Message "Missing modules: $list"
-    exit 1
+function Import-WriteStatusModule {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory, ValueFromPipeline)]
+        [string]$Path
+    )
+    process {
+        try {
+            . $Path
+            Write-Status -Level INFO -Message "Write-Status module loaded from $Path"
+        } catch {
+            Write-Error "Failed to load Write-Status from $Path"
+            throw
+        }
+    }
 }
 
-Write-Status -Level SUCCESS -Message 'All dependencies are satisfied.'
+function Test-PowerShellVersion {
+    [CmdletBinding()]
+    param()
+    process {
+        try {
+            if ($PSVersionTable.PSVersion.Major -lt 7) {
+                Write-Status -Level ERROR -Message 'PowerShell 7 or higher is required.'
+                return [PSCustomObject]@{
+                    Check   = "PowerShell Version"
+                    Status  = "Failed"
+                    Message = "Version $($PSVersionTable.PSVersion) is below required version 7."
+                }
+            } else {
+                Write-Status -Level SUCCESS -Message "PowerShell version $($PSVersionTable.PSVersion) detected."
+                return [PSCustomObject]@{
+                    Check   = "PowerShell Version"
+                    Status  = "Passed"
+                    Message = "Version $($PSVersionTable.PSVersion) meets requirement."
+                }
+            }
+        } catch {
+            Write-Status -Level ERROR -Message $_.Exception.Message
+            throw
+        }
+    }
+}
 
+function Test-RequiredModules {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory, ValueFromPipeline)]
+        [string[]]$Module
+    )
+    process {
+        foreach ($mod in $Module) {
+            try {
+                if (Get-Module -ListAvailable -Name $mod) {
+                    Write-Status -Level SUCCESS -Message "Module '$mod' is installed."
+                    [PSCustomObject]@{
+                        Check   = $mod
+                        Module  = $mod
+                        Status  = "Installed"
+                        Message = "Module '$mod' is available."
+                    }
+                } else {
+                    Write-Status -Level ERROR -Message "Required module '$mod' is missing."
+                    [PSCustomObject]@{
+                        Check   = $mod
+                        Module  = $mod
+                        Status  = "Missing"
+                        Message = "Module '$mod' is not available."
+                    }
+                }
+            } catch {
+                Write-Status -Level ERROR -Message "Failed to check module '$mod'. $_"
+                [PSCustomObject]@{
+                    Check   = $mod
+                    Module  = $mod
+                    Status  = "Error"
+                    Message = $_.Exception.Message
+                }
+            }
+        }
+    }
+}
+
+function Test-DependencyState {
+    [CmdletBinding()]
+    param()
+    process {
+        $result = @()
+
+        $writeStatusPath = Test-WriteStatusModulePath
+        $writeStatusPath | Import-WriteStatusModule
+
+        $versionCheck = Test-PowerShellVersion
+        $result += $versionCheck
+
+        $requiredModules = @('Pester')
+        $moduleResults = $requiredModules | Test-RequiredModules
+        $result += $moduleResults
+
+        $missing = $moduleResults | Where-Object { $_.Status -ne "Installed" }
+
+        if ($missing) {
+            Write-Status -Level ERROR -Message ("Missing modules: " + ($missing.Module -join ', '))
+        } else {
+            Write-Status -Level SUCCESS -Message 'All dependencies are satisfied.'
+        }
+
+        return $result
+    }
+}
+
+# Entry point
+Test-DependencyState
