@@ -49,3 +49,4 @@ All notable changes to this project will be documented in this file.
 - Documented repository URL in README clone instructions. (PR #)
 - Instructed contributors to run `src/Check-Dependencies.ps1` before running tests or scripts. (PR #)
 - Removed duplicate bullet about API layer from Architecture section in AGENTS guidelines. (PR #)
+- Documented running Pester tests with the repository configuration in AGENTS guidelines. (PR #)
