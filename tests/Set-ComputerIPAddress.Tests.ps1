@@ -7,6 +7,15 @@ Describe 'Set-ComputerIPAddress function' {
 
     BeforeEach {
         Mock Write-Status {}
+        function Get-NetAdapter {}
+        function Get-NetIPConfiguration {}
+        function Remove-NetIPAddress {}
+        function Remove-NetRoute {}
+        function New-NetIPAddress {}
+        function Set-DnsClientServerAddress {}
+        function Restart-NetAdapter {}
+        function Clear-DnsClientCache {}
+
         Mock Get-NetAdapter { [pscustomobject]@{ Name = 'Ethernet' } }
         Mock Get-NetIPConfiguration { [pscustomobject]@{ IPv4Address = $null; IPv4DefaultGateway = $null } }
         Mock Remove-NetIPAddress {}
@@ -17,34 +26,20 @@ Describe 'Set-ComputerIPAddress function' {
         Mock Clear-DnsClientCache {}
     }
 
-    It 'configures IP when computer name matches' {
-        $csv = @"
-ComputerName,StaticIPAddress
-$($env:COMPUTERNAME),10.0.0.5
-"@ | Out-String
-        $path = Join-Path $TestDrive 'match.csv'
-        $csv | Set-Content -Path $path
-        Set-ComputerIPAddress -CSVPath $path
+    It 'configures IP with provided address' {
+        Set-ComputerIPAddress -IPAddress '10.0.0.5' -DefaultGateway '10.0.0.1'
         Assert-MockCalled -CommandName New-NetIPAddress -Times 1
         Assert-MockCalled -CommandName Write-Status -ParameterFilter { $Level -eq 'SUCCESS' } -Times 1
     }
 
-    It 'logs warning when no match found' {
-        $csv = @"ComputerName,StaticIPAddress
-Other,10.0.0.5"@
-        $path = Join-Path $TestDrive 'nomatch.csv'
-        $csv | Set-Content -Path $path
-        Set-ComputerIPAddress -CSVPath $path
-        Assert-MockCalled -CommandName New-NetIPAddress -Times 0
-        Assert-MockCalled -CommandName Write-Status -ParameterFilter { $Level -eq 'WARN' } -Times 1
+    It 'logs error when adapter is missing' {
+        Mock Get-NetAdapter { $null }
+        Set-ComputerIPAddress -IPAddress '10.0.0.5'
+        Assert-MockCalled -CommandName Write-Status -ParameterFilter { $Level -eq 'ERROR' } -Times 1
     }
 
     It 'does not modify adapter in WhatIf mode' {
-        $csv = @"ComputerName,StaticIPAddress
-$($env:COMPUTERNAME),10.0.0.5"@
-        $path = Join-Path $TestDrive 'whatif.csv'
-        $csv | Set-Content -Path $path
-        Set-ComputerIPAddress -CSVPath $path -WhatIf
+        Set-ComputerIPAddress -IPAddress '10.0.0.5' -WhatIf
         Assert-MockCalled -CommandName New-NetIPAddress -Times 0
     }
 }

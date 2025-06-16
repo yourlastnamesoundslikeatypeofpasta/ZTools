@@ -1,62 +1,76 @@
-<#
-.SYNOPSIS
-Configures the local computer's IP address using a CSV mapping.
-.DESCRIPTION
-Imports a CSV file with `ComputerName` and `StaticIPAddress` columns and sets the
-IP configuration for the matching computer. Only the Ethernet adapter is
-modified. Existing IPv4 addresses and default routes are removed before applying
-the new settings.
-.PARAMETER CSVPath
-Path to the CSV file containing computer/IP mappings.
-.EXAMPLE
-Set-ComputerIPAddress -CSVPath .\Computers.csv
-.NOTES
-Must be run locally on the target machine.
-#>
+# <#
+# .SYNOPSIS
+# Configures a network adapter with a static IPv4 address.
+#
+# .DESCRIPTION
+# Sets the IPv4 address, gateway and DNS servers for the specified adapter. Any
+# existing IPv4 addresses and routes are removed before applying the new
+# configuration.
+#
+# .PARAMETER IPAddress
+# Static IPv4 address to apply.
+#
+# .PARAMETER PrefixLength
+# Subnet prefix length. Defaults to 24.
+#
+# .PARAMETER DefaultGateway
+# Optional default gateway address.
+#
+# .PARAMETER DnsServerAddress
+# Optional DNS server addresses. Defaults to '8.8.8.8'.
+#
+# .PARAMETER AdapterName
+# Name of the network adapter to configure. Defaults to 'Ethernet'.
+#
+# .EXAMPLE
+# Set-ComputerIPAddress -IPAddress 10.0.0.5 -DefaultGateway 10.0.0.1
+#
+# .NOTES
+# Must be run locally on the target machine.
+# #>
 function Set-ComputerIPAddress {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
         [Parameter(Mandatory)]
-        [string]$CSVPath
+        [ValidateNotNullOrEmpty()]
+        [string]$IPAddress,
+
+        [int]$PrefixLength = 24,
+
+        [string]$DefaultGateway,
+
+        [string[]]$DnsServerAddress = '8.8.8.8',
+
+        [string]$AdapterName = 'Ethernet'
     )
 
-    if (-not (Test-Path $CSVPath)) {
-        Write-Status -Level ERROR -Message 'CSV file not found.' -Fast
-        return
-    }
-
-    $entries = Import-Csv -Path $CSVPath
-    if (-not $entries) {
-        Write-Status -Level ERROR -Message 'CSV file not found.' -Fast
-        return
-    }
-
-    $adapter = Get-NetAdapter -Name 'Ethernet'
+    $adapter = Get-NetAdapter -Name $AdapterName
     if (-not $adapter) {
-        Write-Status -Level ERROR -Message 'Ethernet adapter not found.' -Fast
+        Write-Status -Level ERROR -Message "Adapter '$AdapterName' not found." -Fast
         return
     }
 
-    foreach ($entry in $entries) {
-        if ($entry.ComputerName -eq $env:COMPUTERNAME) {
-            if ($PSCmdlet.ShouldProcess($entry.StaticIPAddress, 'Configure IP')) {
-                $config = $adapter | Get-NetIPConfiguration
-                if ($config.IPv4Address) {
-                    $adapter | Remove-NetIPAddress -AddressFamily IPv4 -Confirm:$false
-                }
-                if ($config.IPv4DefaultGateway) {
-                    $adapter | Remove-NetRoute -AddressFamily IPv4 -Confirm:$false
-                }
-                $adapter | New-NetIPAddress -AddressFamily IPv4 -IPAddress $entry.StaticIPAddress -PrefixLength 24 -DefaultGateway '192.168.1.1'
-                $adapter | Set-DnsClientServerAddress -ServerAddresses '8.8.8.8'
-                Restart-NetAdapter -Name 'Ethernet'
-                Clear-DnsClientCache
-                Write-Status -Level SUCCESS -Message 'IP address configured.' -Fast
-            }
-            return
-        }
+    if (-not $PSCmdlet.ShouldProcess($IPAddress, 'Configure IP')) { return }
+
+    $config = $adapter | Get-NetIPConfiguration
+    if ($config.IPv4Address) {
+        $adapter | Remove-NetIPAddress -AddressFamily IPv4 -Confirm:$false
     }
-    Write-Status -Level WARN -Message 'No matching computer name found in CSV file.' -Fast
+    if ($config.IPv4DefaultGateway) {
+        $adapter | Remove-NetRoute -AddressFamily IPv4 -Confirm:$false
+    }
+
+    $params = @{ AddressFamily = 'IPv4'; IPAddress = $IPAddress; PrefixLength = $PrefixLength }
+    if ($DefaultGateway) { $params.DefaultGateway = $DefaultGateway }
+    $adapter | New-NetIPAddress @params
+
+    if ($DnsServerAddress) {
+        $adapter | Set-DnsClientServerAddress -ServerAddresses $DnsServerAddress
+    }
+
+    Restart-NetAdapter -Name $AdapterName
+    Clear-DnsClientCache
+    Write-Status -Level SUCCESS -Message 'IP address configured.' -Fast
 }
 
 if ($MyInvocation.InvocationName -ne '.') {
