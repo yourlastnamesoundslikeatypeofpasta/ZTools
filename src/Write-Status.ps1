@@ -13,7 +13,7 @@ the path can be overridden via the `LogFile` parameter.
 The level of the message: INFO, WARN, ERROR, SUCCESS or DEBUG.
 
 .PARAMETER Message
-The message text to display and log. Accepts pipeline input.
+The message text to display and log. 
 
 .PARAMETER LogFile
 Path to the log file. Defaults to a timestamped log under the repository's
@@ -24,9 +24,6 @@ Skips colored console output for faster logging.
 
 .EXAMPLE
 Write-Status -Level INFO -Message 'Build started'
-
-.EXAMPLE
-'Completed' | Write-Status -Level SUCCESS -LogFile 'C:\temp\run.log'
 
 .EXAMPLE
 Write-Status -Level ERROR -Message 'Failed' -Fast
@@ -121,7 +118,7 @@ function Write-ErrorLog {
     #>
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory, ValueFromPipeline)]
+        [Parameter(Mandatory)]
         [string]$Message,
 
         [string]$Path = $script:ErrorLogFile
@@ -143,7 +140,7 @@ function global:Write-Status {
         [ValidateSet('INFO','WARN','ERROR','SUCCESS','DEBUG')]
         [string]$Level,
 
-        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory)]
         [string]$Message,
 
         [string]$LogFile = $script:StatusLogFile,
@@ -151,65 +148,63 @@ function global:Write-Status {
         [switch]$Fast
     )
 
-    process {
-        $currentHour = Get-Date -Format 'yyyy-MM-dd_HH'
-        if ($PSBoundParameters.ContainsKey('LogFile')) {
-            if ($LogFile -ne $script:StatusLogFile) {
-                New-LogDirectory -Path (Split-Path -Path $LogFile -Parent)
-                if (-not (Test-Path $LogFile)) {
-                    New-Item -Path $LogFile -ItemType File -Force | Out-Null
-                    Write-Banner -Path $LogFile
-                }
-                $script:StatusLogFile = $LogFile
-                $script:LogHour       = $currentHour
+    $currentHour = Get-Date -Format 'yyyy-MM-dd_HH'
+    if ($PSBoundParameters.ContainsKey('LogFile')) {
+        if ($LogFile -ne $script:StatusLogFile) {
+            New-LogDirectory -Path (Split-Path -Path $LogFile -Parent)
+            if (-not (Test-Path $LogFile)) {
+                New-Item -Path $LogFile -ItemType File -Force | Out-Null
+                Write-Banner -Path $LogFile
             }
-        } else {
-            if (-not $script:StatusLogFile -or $currentHour -ne $script:LogHour) {
-                New-LogFile -Directory $script:LogDirectory | Out-Null
-            }
-            $LogFile = $script:StatusLogFile
+            $script:StatusLogFile = $LogFile
+            $script:LogHour       = $currentHour
         }
+    } else {
+        if (-not $script:StatusLogFile -or $currentHour -ne $script:LogHour) {
+            New-LogFile -Directory $script:LogDirectory | Out-Null
+        }
+        $LogFile = $script:StatusLogFile
+    }
 
-        $time = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
-        $symbol = switch ($Level) {
-            'INFO'    { '-' }
-            'WARN'    { '!' }
-            'ERROR'   { 'X' }
-            'SUCCESS' { '+' }
-            'DEBUG'   { '*' }
-        }
-        $entry = "$time [$symbol] $Message"
-        Add-Content -Path $script:StatusLogFile -Value $entry -Encoding utf8
-        if ($Level -eq 'ERROR') {
-            Write-ErrorLog -Message $Message
-        }
+    $time = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
+    $symbol = switch ($Level) {
+        'INFO'    { '-' }
+        'WARN'    { '!' }
+        'ERROR'   { 'X' }
+        'SUCCESS' { '+' }
+        'DEBUG'   { '*' }
+    }
+    $entry = "$time [$symbol] $Message"
+    Add-Content -Path $script:StatusLogFile -Value $entry -Encoding utf8
+    if ($Level -eq 'ERROR') {
+        Write-ErrorLog -Message $Message
+    }
 
-        if ($Fast) {
-            switch ($Level) {
-                'INFO'    { Write-Verbose $Message }
-                'DEBUG'   { Write-Debug   $Message }
-                'WARN'    { Write-Warning $Message }
-                'ERROR'   { Write-Error   $Message }
-                'SUCCESS' { Write-Verbose $Message }
-            }
+    if ($Fast) {
+        switch ($Level) {
+            'INFO'    { Write-Verbose $Message }
+            'DEBUG'   { Write-Debug   $Message }
+            'WARN'    { Write-Warning $Message }
+            'ERROR'   { Write-Error   $Message }
+            'SUCCESS' { Write-Verbose $Message }
         }
-        else {
-            switch ($Level) {
-                'INFO' {
-                    if ($VerbosePreference -ne 'SilentlyContinue') {
-                        Write-Host $Message -ForegroundColor Cyan
-                    }
-                    Write-Verbose $Message
+    }
+    else {
+        switch ($Level) {
+            'INFO' {
+                if ($VerbosePreference -ne 'SilentlyContinue') {
+                    Write-Host $Message -ForegroundColor Cyan
                 }
-                'DEBUG'   { Write-Debug   $Message }
-                'WARN'    { Write-Warning $Message }
-                'ERROR'   { Write-Error   $Message }
-                'SUCCESS' {
-                    if ($VerbosePreference -ne 'SilentlyContinue') {
-                        Write-Host $Message -ForegroundColor Green
-                    }
-                    Write-Verbose $Message
+                Write-Verbose $Message
+            }
+            'DEBUG'   { Write-Debug   $Message }
+            'WARN'    { Write-Warning $Message }
+            'ERROR'   { Write-Error   $Message }
+            'SUCCESS' {
+                if ($VerbosePreference -ne 'SilentlyContinue') {
+                    Write-Host $Message -ForegroundColor Green
                 }
+                Write-Verbose $Message
             }
         }
     }

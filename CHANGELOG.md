@@ -41,3 +41,4 @@ All notable changes to this project will be documented in this file.
 - Added PowerShell_References document with links to key module documentation. (PR #)
 - Clarified PowerShell function guidelines in `AGENTS.md`, including when to use
   `Begin`, `Process`, and `End` blocks. (PR #)
+- Removed pipeline input support from Write-Status logging function. (PR #)
