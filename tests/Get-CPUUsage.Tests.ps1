@@ -15,9 +15,13 @@ Describe 'Get-CPUUsage function' {
 
     Context 'failure conditions' {
         BeforeEach {
+            Set-Item -Path variable:IsWindows -Value $false -Force
             Mock Get-Command { $null } -ParameterFilter { $Name -eq 'ps' }
         }
-
+        AfterEach {
+            Remove-Item -Path variable:IsWindows -ErrorAction SilentlyContinue
+        }
+        
         It 'returns null when ps command is missing' {
             $result = Get-CPUUsage
             $result | Should -Be $null
@@ -26,7 +30,11 @@ Describe 'Get-CPUUsage function' {
 
     Context 'ps errors' {
         BeforeEach {
+            Set-Item -Path variable:IsWindows -Value $false -Force
             Mock ps { throw 'fail' }
+        }
+        AfterEach {
+            Remove-Item -Path variable:IsWindows -ErrorAction SilentlyContinue
         }
 
         It 'returns null when ps throws' {
