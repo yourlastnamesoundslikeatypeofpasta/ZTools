@@ -17,6 +17,8 @@ jobs:
 
       - name: Generate documentation
         uses: tj-actions/auto-doc@v3.6.0
+        with:
+          filename: action.yml
 
       - name: Verify changed files
         id: verify
