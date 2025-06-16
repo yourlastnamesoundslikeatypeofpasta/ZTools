@@ -41,6 +41,7 @@ The `agents/` folder hosts TypeScript code while `src/` is reserved for PowerShe
 ## Contributing
 
 Contributions are welcome! Feel free to open an issue or submit a pull request with improvements or new scripts. Please include documentation for any new tools.
+Refer to `AGENTS.md` and `docs/PowerShell_Guidelines.md` for naming conventions and pipeline support when adding new PowerShell scripts.
 
 ## License
 
