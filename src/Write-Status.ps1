@@ -36,14 +36,104 @@ This function maps the provided level to `Write-Verbose`, `Write-Debug`,
 `$DebugPreference` affect console output.
 #>
 
-if (-not $script:StatusLogFile) {
-    $repoRoot = Split-Path -Path $PSScriptRoot -Parent
-    $logDir   = Join-Path -Path $repoRoot -ChildPath 'logs'
-    if (-not (Test-Path $logDir)) {
-        New-Item -Path $logDir -ItemType Directory -Force | Out-Null
+$repoRoot              = Split-Path -Path $PSScriptRoot -Parent
+$script:LogDirectory   = Join-Path -Path $repoRoot -ChildPath 'logs'
+$script:ErrorLogFile   = Join-Path -Path $script:LogDirectory -ChildPath 'error.log'
+$script:StatusLogFile  = $null
+$script:LogHour        = $null
+
+function New-LogDirectory {
+    <#
+    .SYNOPSIS
+    Ensures the log directory exists.
+    .PARAMETER Path
+    Directory path to create if missing.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path
+    )
+
+    if (-not (Test-Path $Path)) {
+        New-Item -Path $Path -ItemType Directory -Force | Out-Null
     }
-    $timestamp = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'
-    $script:StatusLogFile = Join-Path -Path $logDir -ChildPath "$timestamp.log"
+}
+
+function Write-Banner {
+    <#
+    .SYNOPSIS
+    Writes a header similar to `Start-Transcript` at the start of a log file.
+    .PARAMETER Path
+    The log file to write the banner to.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path
+    )
+
+    $machine = $env:COMPUTERNAME
+    $now     = Get-Date -Format 'MM/dd/yyyy HH:mm:ss'
+    $lines   = @(
+        '**********************',
+        "Machine : $machine",
+        "Date    : $now",
+        '**********************'
+    )
+    Add-Content -Path $Path -Value ($lines -join [Environment]::NewLine) -Encoding utf8
+}
+
+function New-LogFile {
+    <#
+    .SYNOPSIS
+    Creates or rotates the hourly log file.
+    .PARAMETER Directory
+    Directory where logs are stored.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Directory
+    )
+
+    New-LogDirectory -Path $Directory
+
+    $hour    = Get-Date -Format 'yyyy-MM-dd_HH'
+    $logPath = Join-Path -Path $Directory -ChildPath "$hour.log"
+
+    if (-not (Test-Path $logPath)) {
+        New-Item -Path $logPath -ItemType File -Force | Out-Null
+        Write-Banner -Path $logPath
+    }
+
+    $script:LogHour       = $hour
+    $script:StatusLogFile = $logPath
+    return $logPath
+}
+
+function Write-ErrorLog {
+    <#
+    .SYNOPSIS
+    Appends an entry to the persistent error log.
+    .PARAMETER Message
+    Message text to record.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory, ValueFromPipeline)]
+        [string]$Message,
+
+        [string]$Path = $script:ErrorLogFile
+    )
+
+    process {
+        New-LogDirectory -Path (Split-Path -Path $Path -Parent)
+        $time    = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
+        $machine = $env:COMPUTERNAME
+        $entry   = "$time [$machine] $Message"
+        Add-Content -Path $Path -Value $entry -Encoding utf8
+    }
 }
 
 function global:Write-Status {
@@ -62,8 +152,22 @@ function global:Write-Status {
     )
 
     process {
-        if ($LogFile -ne $script:StatusLogFile) {
-            $script:StatusLogFile = $LogFile
+        $currentHour = Get-Date -Format 'yyyy-MM-dd_HH'
+        if ($PSBoundParameters.ContainsKey('LogFile')) {
+            if ($LogFile -ne $script:StatusLogFile) {
+                New-LogDirectory -Path (Split-Path -Path $LogFile -Parent)
+                if (-not (Test-Path $LogFile)) {
+                    New-Item -Path $LogFile -ItemType File -Force | Out-Null
+                    Write-Banner -Path $LogFile
+                }
+                $script:StatusLogFile = $LogFile
+                $script:LogHour       = $currentHour
+            }
+        } else {
+            if (-not $script:StatusLogFile -or $currentHour -ne $script:LogHour) {
+                New-LogFile -Directory $script:LogDirectory | Out-Null
+            }
+            $LogFile = $script:StatusLogFile
         }
 
         $time = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
@@ -76,6 +180,9 @@ function global:Write-Status {
         }
         $entry = "$time [$symbol] $Message"
         Add-Content -Path $script:StatusLogFile -Value $entry -Encoding utf8
+        if ($Level -eq 'ERROR') {
+            Write-ErrorLog -Message $Message
+        }
 
         if ($Fast) {
             switch ($Level) {
