@@ -10,6 +10,26 @@ The project is hosted at [https://github.com/yourlastnamesoundslikeatypeofpasta/
 - Secure configuration using PowerShell credential management and sign scripts when possible.
 - Unit test new features after implementation to maintain reliability.
 
+## Module Development Roadmap
+
+The project is organized into discrete modules that can be combined through an
+orchestrator. Current module folders under `src/` include:
+
+- `ActiveDirectory`
+- `ExchangeOnline`
+- `MicrosoftGraph`
+- `PnP`
+- `ZtCore` (orchestrator)
+
+Develop each module with consistent input and output structures so that they can
+be surfaced later through RESTful API endpoints. The orchestrator module will be
+responsible for coordinating these modules and exposing toolbox features.
+
+The long‑term goal is to provide an API layer that allows both read and write
+operations via HTTP routes. Design functions with this future API integration in
+mind so they can be easily imported or invoked by a custom GPT or other
+interfaces.
+
 ## PowerShell scripts
 - Keep all PowerShell code under the `src/` directory using the `.ps1` extension.
 - Include comment-based help for any new scripts.
