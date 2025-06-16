@@ -1,3 +1,22 @@
+<#
+.SYNOPSIS
+Checks that required PowerShell modules are installed and verifies the
+PowerShell version.
+
+.DESCRIPTION
+`Check-Dependencies.ps1` loads the repository's `Write-Status.ps1` logger and
+then runs a series of tests. It ensures PowerShell 7 or higher is in use and
+that core modules such as Pester, PnP.PowerShell, ExchangeOnlineManagement,
+Microsoft.Graph and ActiveDirectory are available. Each check outputs a status
+object summarizing the result.
+
+.EXAMPLE
+PS> ./Check-Dependencies.ps1
+Runs the dependency checks and returns a list of status objects indicating
+which modules are installed and whether the PowerShell version meets the
+requirement.
+#>
+
 function Test-WriteStatusModulePath {
     [CmdletBinding()]
     param()
