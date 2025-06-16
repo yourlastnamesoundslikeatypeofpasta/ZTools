@@ -1,4 +1,5 @@
 This repository contains PowerShell utilities and a set of experimental TypeScript agents.
+The project is hosted at [https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools).
 
 ## Architecture
 - Build every cmdlet and agent as a modular component so the project scales easily.
