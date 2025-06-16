@@ -6,6 +6,7 @@ The project is hosted at [https://github.com/yourlastnamesoundslikeatypeofpasta/
 - Use a shared base data structure for cross-module communication and orchestration.
 - Keep modules interoperable; pipeline output from one module should integrate with others.
 - Implement comprehensive logging with multiple output streams and a rich format.
+- Display a progress bar during long-running tasks. Use `Write-Progress` or similar tools to show Windows-style progress updates where practical.
 - Handle failures gracefully with `try/catch` blocks and fallback logic.
 - Secure configuration using PowerShell credential management and sign scripts when possible.
 - Unit test new features after implementation to maintain reliability.
