@@ -21,6 +21,7 @@ orchestrator. Current module folders under `src/` include:
 - `ExchangeOnline`
 - `MicrosoftGraph`
 - `PnP`
+- `MonitoringTools` - scripts to read CPU, memory, disk and domain information
 - `ZtCore` (orchestrator)
 
 Develop each module with consistent input and output structures so that they can
@@ -52,8 +53,9 @@ Pull request summaries should mention notable changes and reference any tests ru
 
 - Update `CHANGELOG.md` in every pull request.
 - Add a bullet under the `Unreleased` section describing the change.
-- After the description, include the pull request number in parentheses,
-  for example `(PR #42)`.
+  Append it at the end of the list to reduce merge conflicts.
+- After the description, include the pull request number in parentheses.
+  Leave the number blank when opening the pull request, for example `(PR #)`.
 - The changelog can be updated again after the pull request is merged if needed.
 
 ## Dependencies

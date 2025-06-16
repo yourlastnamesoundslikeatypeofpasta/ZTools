@@ -44,4 +44,17 @@ Describe 'Check-Dependencies functions' {
         $result.Status | Should -Be 'Failed'
         $PSVersionTable.PSVersion = $original
     }
+
+    It 'handles threaded execution correctly' {
+        $modules = 'Microsoft.PowerShell.Utility','Missing.Thread.Test'
+        $result = $modules | Test-RequiredModules
+
+        $installed = $result | Where-Object { $_.Module -eq 'Microsoft.PowerShell.Utility' }
+        $missing   = $result | Where-Object { $_.Module -eq 'Missing.Thread.Test' }
+
+        $installed.Status | Should -Be 'Installed'
+        $missing.Status   | Should -Be 'Missing'
+
+        (Get-Job).Count | Should -Be 0
+    }
 }

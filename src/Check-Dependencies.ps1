@@ -1,3 +1,20 @@
+<#
+.SYNOPSIS
+Checks the PowerShell version and required modules.
+
+.DESCRIPTION
+`Check-Dependencies.ps1` loads `Write-Status.ps1` and verifies that the
+current session is running PowerShell 7 or later. It then checks for the
+presence of several required modules including `Pester`, `PnP.PowerShell`,
+`ExchangeOnlineManagement`, `Microsoft.Graph` and `ActiveDirectory`. Status
+messages are written for each check so missing modules or an insufficient
+PowerShell version are clearly reported.
+
+.EXAMPLE
+./src/Check-Dependencies.ps1
+Runs the dependency checks in the current PowerShell session and displays
+the results using `Write-Status`.
+#>
 function Test-WriteStatusModulePath {
     [CmdletBinding()]
     param()
@@ -47,35 +64,58 @@ function Test-RequiredModules {
         [Parameter(Mandatory, ValueFromPipeline)]
         [string[]]$Module
     )
+    begin {
+        $modulesToCheck = @()
+    }
     process {
-        foreach ($mod in $Module) {
-            try {
-                if (Get-Module -ListAvailable -Name $mod) {
-                    Write-Status -Level SUCCESS -Message "Module '$mod' is installed."
-                    [PSCustomObject]@{
-                        Check   = $mod
-                        Module  = $mod
-                        Status  = "Installed"
-                        Message = "Module '$mod' is available."
+        $modulesToCheck += $Module
+    }
+    end {
+        $jobs = foreach ($mod in $modulesToCheck) {
+            Start-ThreadJob -ScriptBlock {
+                param($m)
+                try {
+                    if (Get-Module -ListAvailable -Name $m) {
+                        [PSCustomObject]@{
+                            Check   = $m
+                            Module  = $m
+                            Status  = "Installed"
+                            Message = "Module '$m' is available."
+                        }
+                    } else {
+                        [PSCustomObject]@{
+                            Check   = $m
+                            Module  = $m
+                            Status  = "Missing"
+                            Message = "Module '$m' is not available."
+                        }
                     }
-                } else {
-                    Write-Status -Level WARN -Message "Required module '$mod' is missing."
+                } catch {
                     [PSCustomObject]@{
-                        Check   = $mod
-                        Module  = $mod
-                        Status  = "Missing"
-                        Message = "Module '$mod' is not available."
+                        Check   = $m
+                        Module  = $m
+                        Status  = "Error"
+                        Message = $_.Exception.Message
                     }
                 }
-            } catch {
-                Write-Status -Level ERROR -Message "Failed to check module '$mod'. $_"
-                [PSCustomObject]@{
-                    Check   = $mod
-                    Module  = $mod
-                    Status  = "Error"
-                    Message = $_.Exception.Message
-                }
+            } -ArgumentList $mod
+        }
+
+        Wait-Job -Job $jobs | Out-Null
+        $results = foreach ($job in $jobs) {
+            $res = Receive-Job -Job $job
+            Remove-Job -Job $job
+            $res
+        }
+
+        foreach ($r in $results) {
+            switch ($r.Status) {
+                'Installed' { Write-Status -Level SUCCESS -Message "Module '$($r.Module)' is installed." }
+                'Missing'   { Write-Status -Level WARN -Message "Required module '$($r.Module)' is missing." }
+                'Error'     { Write-Status -Level ERROR -Message "Failed to check module '$($r.Module)'. $($r.Message)" }
             }
+
+            $r
         }
     }
 }

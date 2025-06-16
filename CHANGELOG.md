@@ -3,7 +3,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+- Updated MonitoringTools tests for Windows compatibility.
 - Added additional Pester tests for dependency checking functions. (PR #41)
+- Updated Test-RequiredModules to run module checks in parallel using thread jobs and added new tests. (PR #)
 - Updated Pester CI workflow to run on all pull requests. (PR #44)
 - Added AGENTS guidelines and modular TypeScript agent framework (PR #1, PR #4).
 - Introduced Write-Status logging utilities and dependency checking script with Pester tests (PR #8, PR #9, PR #21).
@@ -26,6 +28,9 @@ All notable changes to this project will be documented in this file.
 - Added EntraID module with functions to query Microsoft Graph and return `ZtEntity` objects. (PR #48)
 - Documented Start-ThreadJob usage for background tasks in AGENTS.md. (PR #47)
 - Added `Export-ProductKey` function to retrieve the Windows product key. (PR #49)
+- Documented leaving the pull request number blank and appending entries to the end of the changelog in AGENTS instructions. (PR #)
 - Moved `Check-Dependencies` script under `src` and updated references. (PR #)
 - Removed duplicate `PowerShell-Guidelines.md` and updated references. (PR #)
 - Updated `Install-ZTools` to load module files using a background thread and moved the ThreadJob import. (PR #)
+- Added comment-based help to `Check-Dependencies.ps1` script. (PR #)
+- Verified cleanup of old `docs/PowerShell-Guidelines.md` references. (PR #)
