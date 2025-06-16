@@ -14,3 +14,4 @@ All notable changes to this project will be documented in this file.
 - Documented changelog update process to remove timestamp and PR link requirement
 - Updated AGENTS guidelines to drop timestamp and PR link requirement for changelog entries
 - Added ZtCore orchestrator and domain module folders with initial README files.
+- Clarified API roadmap in AGENTS.md [2025-06-16 02:18 UTC](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/??)
