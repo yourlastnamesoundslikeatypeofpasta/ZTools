@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+- Consolidated PowerShell guidelines and updated docs.
 - Added additional Pester tests for dependency checking functions.
 - Updated Pester CI workflow to run on all pull requests.
 - Added AGENTS guidelines and modular TypeScript agent framework ([PR #1](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/1), [PR #4](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/4)).
