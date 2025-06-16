@@ -21,6 +21,7 @@ orchestrator. Current module folders under `src/` include:
 - `ExchangeOnline`
 - `MicrosoftGraph`
 - `PnP`
+- `MonitoringTools` - scripts to read CPU, memory, disk and domain information
 - `ZtCore` (orchestrator)
 
 Develop each module with consistent input and output structures so that they can
