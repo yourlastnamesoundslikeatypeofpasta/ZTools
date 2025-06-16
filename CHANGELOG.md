@@ -41,5 +41,7 @@ All notable changes to this project will be documented in this file.
 - Added PowerShell_References document with links to key module documentation. (PR #)
 - Clarified PowerShell function guidelines in `AGENTS.md`, including when to use
   `Begin`, `Process`, and `End` blocks. (PR #)
+- Restored composite GitHub Action and README markers for automatic documentation. (PR #)
+- Removed auto documentation workflow and composite action file. (PR #)
 - Updated Write-Status to use '>' for INFO messages and adjusted tests. (PR #)
 - Documented repository URL in README clone instructions. (PR #)
