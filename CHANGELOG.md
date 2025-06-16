@@ -34,3 +34,4 @@ All notable changes to this project will be documented in this file.
 - Updated `Install-ZTools` to load module files using a background thread and moved the ThreadJob import. (PR #)
 - Added comment-based help to `Check-Dependencies.ps1` script. (PR #)
 - Verified cleanup of old `docs/PowerShell-Guidelines.md` references. (PR #)
+- Added PowerShell_References document with links to key module documentation. (PR #)
