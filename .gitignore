@@ -2,3 +2,4 @@
 .vscode/settings.json
 logs/
 coverage.xml
+Pester.TestResults.xml

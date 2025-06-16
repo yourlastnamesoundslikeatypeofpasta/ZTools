@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Added macOS support for Get-RAMUsage.
 - Expanded test coverage for MonitoringTools functions.
 - Fixed MonitoringTools error logging to avoid test failures and updated RAM usage tests for cross-platform support.
+- Fixed failing Get-RAMUsage test on macOS by mocking platform variables.
 - Updated Pester CI workflow to run on all pull requests.
 - Added AGENTS guidelines and modular TypeScript agent framework ([PR #1](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/1), [PR #4](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/4)).
 - Introduced Write-Status logging utilities and dependency checking script with Pester tests ([PR #8](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/8), [PR #9](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/9), [PR #21](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/21)).
