@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Documented modular architecture and system requirements ([PR #22](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/22)).
 - Enabled JaCoCo code coverage for Pester tests via `.pester.ps1`.
 - Updated CI workflow to include code coverage results for Pester tests.
+- Fixed Pester execution in GitHub Actions by relying on configuration instead of the `-CI` parameter.
 - Initial repository setup with basic PowerShell tooling structure ([PR #2](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/2), [PR #3](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/3)).
 - Documented changelog update process to remove timestamp and PR link requirement
 - Updated AGENTS guidelines to drop timestamp and PR link requirement for changelog entries
