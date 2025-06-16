@@ -10,3 +10,4 @@ All notable changes to this project will be documented in this file.
 - Documented modular architecture and system requirements ([PR #22](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/22)).
 - Enabled JaCoCo code coverage for Pester tests via `.pester.ps1`.
 - Initial repository setup with basic PowerShell tooling structure ([PR #2](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/2), [PR #3](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/3)).
+- Documented changelog update process [2025-06-16 02:05 UTC](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/??)
