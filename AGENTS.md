@@ -52,7 +52,8 @@ Pull request summaries should mention notable changes and reference any tests ru
 
 - Update `CHANGELOG.md` in every pull request.
 - Add a bullet under the `Unreleased` section describing the change.
-- Do **not** include a timestamp or link to the pull request.
+- After the description, include the pull request number in parentheses,
+  for example `(PR #42)`.
 - The changelog can be updated again after the pull request is merged if needed.
 
 ## Dependencies
