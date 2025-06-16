@@ -14,10 +14,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup PowerShell
-        uses: actions/setup-powershell@v4
-        with:
-          pwsh-version: '7.5.1'
       - name: Install Pester
         shell: pwsh
         run: Install-Module Pester -Force -Scope CurrentUser -SkipPublisherCheck
