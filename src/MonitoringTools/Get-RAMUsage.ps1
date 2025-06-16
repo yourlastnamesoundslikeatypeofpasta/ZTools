@@ -57,7 +57,7 @@ function Get-RAMUsage {
         }
     }
     catch {
-        Write-Status -Level ERROR -Message $_.Exception.Message -Fast
+        Write-Status -Level ERROR -Message $_.Exception.Message -Fast -ErrorAction SilentlyContinue
         return $null
     }
 }

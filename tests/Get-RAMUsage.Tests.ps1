@@ -15,6 +15,9 @@ Describe 'Get-RAMUsage function' {
     Context 'meminfo missing' {
         BeforeEach {
             Mock Test-Path { $false } -ParameterFilter { $Path -eq '/proc/meminfo' }
+            Mock Get-Command { $null } -ParameterFilter { $Name -eq 'Get-CimInstance' }
+            Mock Get-Command { $null } -ParameterFilter { $Name -eq 'vm_stat' }
+            Mock Get-Command { $null } -ParameterFilter { $Name -eq 'sysctl' }
         }
 
         It 'returns null when /proc/meminfo is absent' {
@@ -25,6 +28,9 @@ Describe 'Get-RAMUsage function' {
     Context 'no MemAvailable entry' {
         BeforeEach {
             Mock Get-Content { @('MemTotal: 1000 kB','MemFree: 400 kB') } -ParameterFilter { $Path -eq '/proc/meminfo' }
+            Mock Get-Command { $null } -ParameterFilter { $Name -eq 'Get-CimInstance' }
+            Mock Get-Command { $null } -ParameterFilter { $Name -eq 'vm_stat' }
+            Mock Get-Command { $null } -ParameterFilter { $Name -eq 'sysctl' }
         }
 
         It 'falls back to MemFree parsing' {
