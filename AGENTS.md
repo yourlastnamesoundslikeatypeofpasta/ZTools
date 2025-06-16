@@ -3,6 +3,9 @@ This repository contains PowerShell utilities and a set of experimental TypeScri
 ## PowerShell scripts
 - Keep all PowerShell code under the `src/` directory using the `.ps1` extension.
 - Include comment-based help for any new scripts.
+- Use advanced functions with `[CmdletBinding()]` and a `param()` block.
+- Support pipeline input where practical.
+- Follow the naming conventions in `docs/PowerShell_Guidelines.md`.
 
 ## TypeScript agents
 - Place TypeScript files inside the `agents/` directory using the `.ts` extension.
