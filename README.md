@@ -39,7 +39,7 @@ The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell ut
 
 1. **Clone the repository**
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools.git
    cd ZTools
    ```
 2. **Browse the tools**
