@@ -46,6 +46,17 @@ The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell ut
    - PowerShell scripts are under `src/`
    - TypeScript agents are under `agents/`
 
+## Running Tests
+
+Pester tests live in the `tests/` folder. A configuration file `.pester.ps1`
+enables code coverage reporting. Run tests from the repository root:
+
+```bash
+pwsh -Command "Invoke-Pester -Configuration (./.pester.ps1)"
+```
+
+This command generates `coverage.xml` with a JaCoCo-style report.
+
 ## PowerShell Best Practices
 
 - Use comment-based help in each script so usage is clear.
