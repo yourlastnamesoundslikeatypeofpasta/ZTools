@@ -11,4 +11,15 @@ Describe 'Get-DiskUsage function' {
         $result | Should -Not -BeNullOrEmpty
         ($result | Select-Object -First 1) | Get-Member -Name Drive | Should -Not -BeNullOrEmpty
     }
+
+    Context 'error handling' {
+        BeforeEach {
+            Mock Get-PSDrive { throw 'fail' }
+        }
+
+        It 'returns null when Get-PSDrive throws' {
+            $result = Get-DiskUsage
+            $result | Should -Be $null
+        }
+    }
 }
