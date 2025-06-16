@@ -28,8 +28,7 @@ The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell ut
 
 ## Prerequisites
 
-- Windows PowerShell 5.1 or [PowerShell](https://github.com/PowerShell/PowerShell) 7+
-- [Node.js](https://nodejs.org/) for running the TypeScript agents
+- [PowerShell](https://github.com/PowerShell/PowerShell) 7+
 
 ## Getting Started
 
