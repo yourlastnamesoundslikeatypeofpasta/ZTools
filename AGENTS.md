@@ -53,7 +53,8 @@ Pull request summaries should mention notable changes and reference any tests ru
 
 - Update `CHANGELOG.md` in every pull request.
 - Add a bullet under the `Unreleased` section describing the change.
-- Do **not** include a timestamp or link to the pull request.
+- After the description, include the pull request number in parentheses,
+  for example `(PR #42)`.
 - The changelog can be updated again after the pull request is merged if needed.
 
 ## Dependencies
@@ -65,4 +66,31 @@ Most tools rely on several PowerShell modules. Ensure the following modules are 
 - `Microsoft.Graph`
 - `ActiveDirectory` (requires RSAT tools)
 
-Run `scripts/Check-Dependencies.ps1` to verify that your environment meets these requirements.
+Run `src/Check-Dependencies.ps1` to verify that your environment meets these requirements.
+
+## Background Thread Jobs
+
+**When to apply**
+- Any time an agent needs to run a quick, non-blocking PowerShell task (e.g. file enumeration, simple API calls, folder scans) without the overhead of a separate PowerShell process.
+
+**Pattern**
+- Use the built-in `ThreadJob` module and `Start-ThreadJob` cmdlet
+- Pass input via `-ArgumentList` and declare parameters inside the script block.
+
+**Example Snippet**
+```powershell
+# 1. Define your input
+$path = "C:\Logs"
+
+# 2. Launch a lightweight background thread
+Start-ThreadJob -ScriptBlock {
+    param($targetPath)
+    # Recursively list everything under the given path
+    Get-ChildItem -Path $targetPath -Recurse
+} -ArgumentList $path
+
+# 3. (Later) Wait for and retrieve results
+$job = Get-Job | Where Name -eq ThreadJob  # or capture the returned job
+$job | Wait-Job
+$items = $job | Receive-Job
+```
