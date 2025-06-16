@@ -26,6 +26,19 @@ The repository uses Pester for testing PowerShell scripts. If any tests exist un
 
 Pull request summaries should mention notable changes and reference any tests run.
 
+## Changelog updates
+
+- Update `CHANGELOG.md` in every pull request.
+- Add a bullet under the `Unreleased` section describing the change.
+- After the description, append the UTC timestamp and link to the pull request in square brackets.
+  Example:
+
+  ```
+  - Improved dependency handling [2025-04-01 12:00 UTC](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/42)
+  ```
+
+- If the PR number is unknown when committing, update the entry once the PR is opened.
+
 ## Dependencies
 
 Most tools rely on several PowerShell modules. Ensure the following modules are installed:
