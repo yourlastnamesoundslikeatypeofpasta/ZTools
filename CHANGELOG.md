@@ -39,3 +39,5 @@ All notable changes to this project will be documented in this file.
 - Enhanced `Set-ComputerIPAddress` with error handling, pipeline input and administrator validation. (PR #)
 - Added shared Test-IsAdministrator function for elevation checks. (PR #)
 - Added PowerShell_References document with links to key module documentation. (PR #)
+- Clarified PowerShell function guidelines in `AGENTS.md`, including when to use
+  `Begin`, `Process`, and `End` blocks. (PR #)
