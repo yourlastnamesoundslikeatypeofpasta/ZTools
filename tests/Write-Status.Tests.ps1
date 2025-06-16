@@ -18,9 +18,9 @@ Describe 'Write-Status' {
             Test-Path $script:StatusLogFile | Should -BeTrue
         }
 
-        It 'logs INFO with minus symbol' {
+        It 'logs INFO with greater-than symbol' {
             Write-Status -Level INFO -Message 'info message'
-            (Get-Content $script:StatusLogFile | Select-Object -Last 1) | Should -Match '\[-\] info message'
+            (Get-Content $script:StatusLogFile | Select-Object -Last 1) | Should -Match '\[>\] info message'
         }
 
         It 'logs WARN with exclamation symbol' {
@@ -95,8 +95,8 @@ Describe 'Write-Status' {
         It 'logs multiple pipeline messages individually' {
             @('one','two') | Write-Status -Level INFO
             $content = Get-Content $script:StatusLogFile
-            ($content | Select-String '\[\-\] one').Count | Should -BeGreaterThan 0
-            ($content | Select-String '\[\-\] two').Count | Should -BeGreaterThan 0
+            ($content | Select-String '\[>\] one').Count | Should -BeGreaterThan 0
+            ($content | Select-String '\[>\] two').Count | Should -BeGreaterThan 0
         }
     }
 }

@@ -172,7 +172,7 @@ function global:Write-Status {
 
         $time = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
         $symbol = switch ($Level) {
-            'INFO'    { '-' }
+            'INFO'    { '>' }
             'WARN'    { '!' }
             'ERROR'   { 'X' }
             'SUCCESS' { '+' }
