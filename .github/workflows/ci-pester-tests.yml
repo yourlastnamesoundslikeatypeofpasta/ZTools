@@ -20,7 +20,8 @@ jobs:
       - name: Run Pester tests
         shell: pwsh
         run: |
-          Invoke-Pester -Path ./tests -Output Detailed -CI
+          $Config = ./.pester.ps1
+          Invoke-Pester -Configuration $Config -Output Detailed -CI
       - name: Upload test artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -29,4 +30,5 @@ jobs:
           path: |
             **/TestResult*.xml
             **/Pester.TestResults.xml
+            coverage.xml
           if-no-files-found: ignore
