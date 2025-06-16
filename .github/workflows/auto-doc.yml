@@ -20,14 +20,14 @@ jobs:
 
       - name: Verify changed files
         id: verify
-        uses: tj-actions/verify-changed-files@v8.6
+        uses: tj-actions/verify-changed-files@v20
         with:
           files: |
             README.md
 
       - name: Commit changes
         if: steps.verify.outputs.files_changed == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           branch: ${{ github.head_ref }}
           commit_message: "chore: update README with auto-doc"
