@@ -88,6 +88,12 @@ Write-Status -Level INFO -Message 'Starting build'
 # Redirect logs
 Write-Status -Level WARN -Message 'Low disk space' -LogFile 'C:\temp\build.log'
 
+# Change default log locations
+Set-WriteStatusConfig -LogDirectory 'C:\logs' -ErrorLogFile 'C:\logs\error.log'
+
+# Use a different logging tool
+Write-Status -Level INFO -Message 'forwarded log' -LogFile (Join-Path $logs 'app.log') | Tee-Object 'C:\logs\full.log'
+
 # Pipeline support
 'Finished' | Write-Status -Level SUCCESS -Fast
 ```
