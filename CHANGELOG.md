@@ -29,4 +29,5 @@ All notable changes to this project will be documented in this file.
 - Documented leaving the pull request number blank and appending entries to the end of the changelog in AGENTS instructions. (PR #)
 - Moved `Check-Dependencies` script under `src` and updated references. (PR #)
 - Removed duplicate `PowerShell-Guidelines.md` and updated references. (PR #)
+- Added comment-based help to `Check-Dependencies.ps1` script. (PR #)
 - Verified cleanup of old `docs/PowerShell-Guidelines.md` references. (PR #)
