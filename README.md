@@ -38,6 +38,16 @@ The `agents/` folder hosts TypeScript code while `src/` is reserved for PowerShe
    - PowerShell scripts are under `src/`
    - TypeScript agents are under `agents/`
 
+## PowerShell Best Practices
+
+- Use comment-based help in each script so usage is clear.
+- Follow verb-noun naming for all functions.
+- Validate parameters with `[CmdletBinding()]` and `param` blocks.
+- Prefer logging via `Write-Verbose`/`Write-Error` instead of `Write-Host`.
+- Avoid hard-coded paths and accept them as parameters.
+
+For more detail see [PowerShell Guidelines](docs/PowerShell-Guidelines.md).
+
 ## Contributing
 
 Contributions are welcome! Feel free to open an issue or submit a pull request with improvements or new scripts. Please include documentation for any new tools.
