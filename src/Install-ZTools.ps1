@@ -10,6 +10,9 @@ Install-ZTools
 .EXAMPLE
 Install-ZTools -ConfigScript './scripts/Configure-SharePoint.ps1'
 #>
+
+Import-Module ThreadJob -ErrorAction SilentlyContinue
+
 function Install-ZTools {
     [CmdletBinding()]
     param(
@@ -22,8 +25,15 @@ function Install-ZTools {
     $writeStatusPath = Join-Path -Path $srcPath -ChildPath 'Write-Status.ps1'
     . $writeStatusPath
 
-    $moduleFiles = Get-ChildItem -Path $srcPath -Recurse -Filter '*.ps1' |
-                   Where-Object { $_.FullName -ne $PSCommandPath -and $_.FullName -ne $writeStatusPath }
+    $moduleJob = Start-ThreadJob -ScriptBlock {
+        param($path, $exclude1, $exclude2)
+        Get-ChildItem -Path $path -Recurse -Filter '*.ps1' |
+            Where-Object { $_.FullName -ne $exclude1 -and $_.FullName -ne $exclude2 }
+    } -ArgumentList $srcPath, $PSCommandPath, $writeStatusPath
+
+    $moduleJob | Wait-Job
+    $moduleFiles = $moduleJob | Receive-Job
+    Remove-Job $moduleJob
 
     foreach ($file in $moduleFiles) {
         Write-Status -Level INFO -Message "Importing $(Split-Path -Leaf $file.FullName)" -Fast
