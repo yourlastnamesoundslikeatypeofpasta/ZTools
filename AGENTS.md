@@ -15,3 +15,14 @@ This repository contains PowerShell utilities and a set of experimental TypeScri
 The repository uses Pester for testing PowerShell scripts. If any tests exist under the `tests/` directory, run them with `pwsh -Command Invoke-Pester` before committing. If Pester is not installed, install it via PowerShell's `Install-Module -Name Pester -Force`.
 
 Pull request summaries should mention notable changes and reference any tests run.
+
+## Dependencies
+
+Most tools rely on several PowerShell modules. Ensure the following modules are installed:
+
+- `PnP.PowerShell`
+- `ExchangeOnlineManagement`
+- `Microsoft.Graph`
+- `ActiveDirectory` (requires RSAT tools)
+
+Run `scripts/Check-Dependencies.ps1` to verify that your environment meets these requirements.

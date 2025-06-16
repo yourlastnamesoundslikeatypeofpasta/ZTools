@@ -29,6 +29,10 @@ The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell ut
 ## Prerequisites
 
 - [PowerShell](https://github.com/PowerShell/PowerShell) 7+
+- [PnP.PowerShell](https://www.powershellgallery.com/packages/PnP.PowerShell)
+- [ExchangeOnlineManagement](https://www.powershellgallery.com/packages/ExchangeOnlineManagement)
+- [Microsoft.Graph](https://www.powershellgallery.com/packages/Microsoft.Graph)
+- [ActiveDirectory](https://www.powershellgallery.com/packages/ActiveDirectory) (requires RSAT)
 
 ## Getting Started
 
