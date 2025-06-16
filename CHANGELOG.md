@@ -26,3 +26,4 @@ All notable changes to this project will be documented in this file.
 - Added EntraID module with functions to query Microsoft Graph and return `ZtEntity` objects.
 - Documented Start-ThreadJob usage for background tasks in AGENTS.md.
 - Added `Export-ProductKey` function to retrieve the Windows product key.
+- Removed `docs/PowerShell-Guidelines.md` and updated links to `docs/PowerShell_Guidelines.md`.
