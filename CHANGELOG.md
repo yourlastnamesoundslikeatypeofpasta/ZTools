@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+- Added composite GitHub Action and README markers for automatic documentation. (PR #)
 - Updated MonitoringTools tests for Windows compatibility.
 - Added additional Pester tests for dependency checking functions. (PR #41)
 - Updated Test-RequiredModules to run module checks in parallel using thread jobs and added new tests. (PR #)
