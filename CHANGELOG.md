@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - Added `Install-ZTools` script to load all modules and optionally run a configuration script. (PR #42)
 - Added `Configure-SharePoint` script to save tenant and app credentials in Credential Manager. (PR #43)
 - Added GitHub workflows for Pester tests and automated documentation generation (PR #18, PR #19, PR #20).
+- Added `ZTools` module manifest and module file for future cmdlet development. (PR #)
 - Documented modular architecture and system requirements (PR #22).
 - Enabled JaCoCo code coverage for Pester tests via `.pester.ps1`. (PR #28)
 - Updated CI workflow to include code coverage results for Pester tests. (PR #30)
