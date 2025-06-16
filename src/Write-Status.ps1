@@ -14,7 +14,7 @@ the path can be overridden via the `LogFile` parameter. Call
 The level of the message: INFO, WARN, ERROR, SUCCESS or DEBUG.
 
 .PARAMETER Message
-The message text to display and log. Accepts pipeline input.
+The message text to display and log.
 
 .PARAMETER LogFile
 Path to the log file. Defaults to a timestamped log under the repository's
@@ -25,9 +25,6 @@ Skips colored console output for faster logging.
 
 .EXAMPLE
 Write-Status -Level INFO -Message 'Build started'
-
-.EXAMPLE
-'Completed' | Write-Status -Level SUCCESS -LogFile 'C:\temp\run.log'
 
 .EXAMPLE
 Write-Status -Level ERROR -Message 'Failed' -Fast
@@ -174,7 +171,7 @@ function global:Write-Status {
         [ValidateSet('INFO','WARN','ERROR','SUCCESS','DEBUG')]
         [string]$Level,
 
-        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory)]
         [string]$Message,
 
         [string]$LogFile = $script:StatusLogFile,

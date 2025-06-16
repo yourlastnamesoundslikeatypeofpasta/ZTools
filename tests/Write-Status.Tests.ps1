@@ -54,10 +54,6 @@ Describe 'Write-Status' {
             (Get-Content $custom | Select-Object -Last 1) | Should -Match 'custom path'
         }
 
-        It 'accepts pipeline input' {
-            'pipeline message' | Write-Status -Level INFO
-            (Get-Content $script:StatusLogFile | Select-Object -Last 1) | Should -Match 'pipeline message'
-        }
 
         It 'logs errors to error log' {
             Write-Status -Level ERROR -Message 'failure' -ErrorAction SilentlyContinue
@@ -91,11 +87,5 @@ Describe 'Write-Status' {
             $script:StatusLogFile | Should -Not -Be $first
         }
 
-        It 'logs multiple pipeline messages individually' {
-            @('one','two') | Write-Status -Level INFO
-            $content = Get-Content $script:StatusLogFile
-            ($content | Select-String '\[>\] one').Count | Should -BeGreaterThan 0
-            ($content | Select-String '\[>\] two').Count | Should -BeGreaterThan 0
-        }
     }
 }

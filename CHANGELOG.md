@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - Enabled JaCoCo code coverage for Pester tests via `.pester.ps1`. (PR #28)
 - Updated CI workflow to include code coverage results for Pester tests. (PR #30)
 - Fixed Pester execution in GitHub Actions by relying on configuration instead of the `-CI` parameter. (PR #37)
+- Removed pipeline input support from Write-Status and updated tests and documentation. (PR #)
 - Initial repository setup with basic PowerShell tooling structure (PR #2, PR #3).
 - Documented changelog update process to remove timestamp and PR link requirement (PR #33)
 - Updated AGENTS guidelines to drop timestamp and PR link requirement for changelog entries (PR #33)
