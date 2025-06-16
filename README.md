@@ -48,6 +48,25 @@ The `agents/` folder hosts TypeScript code while `src/` is reserved for PowerShe
 
 For more detail see [PowerShell Guidelines](docs/PowerShell-Guidelines.md).
 
+## Write-Status Logging Utility
+
+`Write-Status` standardizes messaging across scripts. It honors PowerShell
+preference variables and logs every entry to a file.
+
+```powershell
+# Basic usage
+Write-Status -Level INFO -Message 'Starting build'
+
+# Redirect logs
+Write-Status -Level WARN -Message 'Low disk space' -LogFile 'C:\temp\build.log'
+
+# Pipeline support
+'Finished' | Write-Status -Level SUCCESS -Fast
+```
+
+`Write-Status` maps levels to `Write-Verbose`, `Write-Warning`, `Write-Error` or
+`Write-Debug`, so built-in switches like `-Verbose` control console output.
+
 ## Contributing
 
 Contributions are welcome! Feel free to open an issue or submit a pull request with improvements or new scripts. Please include documentation for any new tools.
