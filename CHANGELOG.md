@@ -32,3 +32,4 @@ All notable changes to this project will be documented in this file.
 - Removed duplicate `PowerShell-Guidelines.md` and updated references. (PR #)
 - Added comment-based help to `Check-Dependencies.ps1` script. (PR #)
 - Verified cleanup of old `docs/PowerShell-Guidelines.md` references. (PR #)
+- Enhanced `Set-ComputerIPAddress` with error handling, pipeline input and administrator validation. (PR #)

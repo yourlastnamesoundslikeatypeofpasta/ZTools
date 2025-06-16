@@ -1,4 +1,4 @@
-# <#
+<#
 # .SYNOPSIS
 # Configures a network adapter with a static IPv4 address.
 #
@@ -27,50 +27,82 @@
 #
 # .NOTES
 # Must be run locally on the target machine.
-# #>
+#>
+function Test-IsAdministrator {
+    [CmdletBinding()]
+    param()
+    process {
+        $identity  = [Security.Principal.WindowsIdentity]::GetCurrent()
+        $principal = [Security.Principal.WindowsPrincipal]$identity
+        $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    }
+}
+
 function Set-ComputerIPAddress {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]$IPAddress,
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
+        [System.Net.IPAddress]$IPAddress,
 
+        [Parameter(ValueFromPipelineByPropertyName)]
         [int]$PrefixLength = 24,
 
-        [string]$DefaultGateway,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [System.Net.IPAddress]$DefaultGateway,
 
+        [Parameter(ValueFromPipelineByPropertyName)]
         [string[]]$DnsServerAddress = '8.8.8.8',
 
+        [Parameter(ValueFromPipelineByPropertyName)]
         [string]$AdapterName = 'Ethernet'
     )
 
-    $adapter = Get-NetAdapter -Name $AdapterName
-    if (-not $adapter) {
-        Write-Status -Level ERROR -Message "Adapter '$AdapterName' not found." -Fast
-        return
+    begin {
+        if (-not (Test-IsAdministrator)) {
+            Write-Status -Level ERROR -Message 'Administrator privileges are required.' -Fast
+            return
+        }
     }
 
-    if (-not $PSCmdlet.ShouldProcess($IPAddress, 'Configure IP')) { return }
+    process {
+        try {
+            $adapter = Get-NetAdapter -Name $AdapterName -ErrorAction Stop
+        } catch {
+            Write-Status -Level ERROR -Message "Adapter '$AdapterName' not found." -Fast
+            return
+        }
+        if (-not $adapter) {
+            Write-Status -Level ERROR -Message "Adapter '$AdapterName' not found." -Fast
+            return
+        }
 
-    $config = $adapter | Get-NetIPConfiguration
-    if ($config.IPv4Address) {
-        $adapter | Remove-NetIPAddress -AddressFamily IPv4 -Confirm:$false
+        if (-not $PSCmdlet.ShouldProcess($IPAddress, 'Configure IP')) { return }
+
+        try {
+            $config = $adapter | Get-NetIPConfiguration -ErrorAction Stop
+            if ($config.IPv4Address) {
+                $adapter | Remove-NetIPAddress -AddressFamily IPv4 -Confirm:$false -ErrorAction Stop
+            }
+            if ($config.IPv4DefaultGateway) {
+                $adapter | Remove-NetRoute -AddressFamily IPv4 -Confirm:$false -ErrorAction Stop
+            }
+
+            $params = @{ AddressFamily = 'IPv4'; IPAddress = $IPAddress.IPAddressToString; PrefixLength = $PrefixLength }
+            if ($DefaultGateway) { $params.DefaultGateway = $DefaultGateway.IPAddressToString }
+            $adapter | New-NetIPAddress @params -ErrorAction Stop
+
+            if ($DnsServerAddress) {
+                $adapter | Set-DnsClientServerAddress -ServerAddresses $DnsServerAddress -ErrorAction Stop
+            }
+
+            Restart-NetAdapter -Name $AdapterName -ErrorAction Stop
+            Clear-DnsClientCache -ErrorAction Stop
+            Write-Status -Level SUCCESS -Message 'IP address configured.' -Fast
+        } catch {
+            Write-Error $_.Exception.Message
+            throw
+        }
     }
-    if ($config.IPv4DefaultGateway) {
-        $adapter | Remove-NetRoute -AddressFamily IPv4 -Confirm:$false
-    }
-
-    $params = @{ AddressFamily = 'IPv4'; IPAddress = $IPAddress; PrefixLength = $PrefixLength }
-    if ($DefaultGateway) { $params.DefaultGateway = $DefaultGateway }
-    $adapter | New-NetIPAddress @params
-
-    if ($DnsServerAddress) {
-        $adapter | Set-DnsClientServerAddress -ServerAddresses $DnsServerAddress
-    }
-
-    Restart-NetAdapter -Name $AdapterName
-    Clear-DnsClientCache
-    Write-Status -Level SUCCESS -Message 'IP address configured.' -Fast
 }
 
 if ($MyInvocation.InvocationName -ne '.') {

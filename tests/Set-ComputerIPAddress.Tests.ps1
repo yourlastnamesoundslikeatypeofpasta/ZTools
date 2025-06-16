@@ -7,6 +7,7 @@ Describe 'Set-ComputerIPAddress function' {
 
     BeforeEach {
         Mock Write-Status {}
+        Mock Test-IsAdministrator { $true }
         function Get-NetAdapter {}
         function Get-NetIPConfiguration {}
         function Remove-NetIPAddress {}
@@ -41,5 +42,11 @@ Describe 'Set-ComputerIPAddress function' {
     It 'does not modify adapter in WhatIf mode' {
         Set-ComputerIPAddress -IPAddress '10.0.0.5' -WhatIf
         Assert-MockCalled -CommandName New-NetIPAddress -Times 0
+    }
+
+    It 'accepts pipeline input' {
+        $obj = [pscustomobject]@{ IPAddress = '10.0.0.6'; DefaultGateway = '10.0.0.1' }
+        $obj | Set-ComputerIPAddress
+        Assert-MockCalled -CommandName New-NetIPAddress -Times 1
     }
 }
