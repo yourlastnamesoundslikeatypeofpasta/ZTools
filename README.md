@@ -88,9 +88,8 @@ Write-Status -Level INFO -Message 'Starting build'
 # Redirect logs
 Write-Status -Level WARN -Message 'Low disk space' -LogFile 'C:\temp\build.log'
 
-# Pipeline support
-'Finished' | Write-Status -Level SUCCESS -Fast
-```
+# Fast logging
+Write-Status -Level SUCCESS -Message 'Finished' -Fast
 
 `Write-Status` maps levels to `Write-Verbose`, `Write-Warning`, `Write-Error` or
 `Write-Debug`, so built-in switches like `-Verbose` control console output.

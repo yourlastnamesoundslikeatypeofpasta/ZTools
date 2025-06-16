@@ -10,7 +10,6 @@ The project is hosted at [https://github.com/yourlastnamesoundslikeatypeofpasta/
 - Handle failures gracefully with `try/catch` blocks and fallback logic.
 - Secure configuration using PowerShell credential management and sign scripts when possible.
 - Unit test new features after implementation to maintain reliability.
-- Plan for an API layer so these tools can be accessed by web or GPT-based clients.
 
 ## Module Development Roadmap
 
