@@ -9,5 +9,7 @@ All notable changes to this project will be documented in this file.
 - Added GitHub workflows for Pester tests and automated documentation generation ([PR #18](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/18), [PR #19](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/19), [PR #20](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/20)).
 - Documented modular architecture and system requirements ([PR #22](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/22)).
 - Enabled JaCoCo code coverage for Pester tests via `.pester.ps1`.
+- Updated CI workflow to include code coverage results for Pester tests.
 - Initial repository setup with basic PowerShell tooling structure ([PR #2](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/2), [PR #3](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/3)).
 - Documented changelog update process [2025-06-16 02:05 UTC](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/??)
+- Added ZtCore orchestrator and domain module folders with initial README files.
