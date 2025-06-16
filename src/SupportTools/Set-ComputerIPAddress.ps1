@@ -28,15 +28,7 @@
 # .NOTES
 # Must be run locally on the target machine.
 #>
-function Test-IsAdministrator {
-    [CmdletBinding()]
-    param()
-    process {
-        $identity  = [Security.Principal.WindowsIdentity]::GetCurrent()
-        $principal = [Security.Principal.WindowsPrincipal]$identity
-        $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-    }
-}
+
 
 function Set-ComputerIPAddress {
     [CmdletBinding(SupportsShouldProcess=$true)]

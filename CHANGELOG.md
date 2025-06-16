@@ -33,3 +33,5 @@ All notable changes to this project will be documented in this file.
 - Added comment-based help to `Check-Dependencies.ps1` script. (PR #)
 - Verified cleanup of old `docs/PowerShell-Guidelines.md` references. (PR #)
 - Enhanced `Set-ComputerIPAddress` with error handling, pipeline input and administrator validation. (PR #)
+
+- Added shared Test-IsAdministrator function for elevation checks. (PR #)

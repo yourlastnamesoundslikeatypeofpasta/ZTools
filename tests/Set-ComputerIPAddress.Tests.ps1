@@ -2,6 +2,7 @@ Describe 'Set-ComputerIPAddress function' {
     BeforeAll {
         $corePath = Join-Path $PSScriptRoot '..' 'src'
         . (Join-Path $corePath 'Write-Status.ps1')
+        . (Join-Path $corePath 'Test-IsAdministrator.ps1')
         . (Join-Path $corePath 'SupportTools' 'Set-ComputerIPAddress.ps1')
     }
 
