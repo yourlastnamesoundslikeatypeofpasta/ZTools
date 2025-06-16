@@ -52,12 +52,8 @@ Pull request summaries should mention notable changes and reference any tests ru
 
 ## Changelog updates
 
-- Update `CHANGELOG.md` in every pull request.
-- Add a bullet under the `Unreleased` section describing the change.
-  Append it at the end of the list to reduce merge conflicts.
-- After the description, include the pull request number in parentheses.
-  Leave the number blank when opening the pull request, for example `(PR #)`.
-- The changelog can be updated again after the pull request is merged if needed.
+`CHANGELOG.md` is automatically generated from merged pull requests.
+Do not edit it manually in individual PRs.
 
 ## Dependencies
 
