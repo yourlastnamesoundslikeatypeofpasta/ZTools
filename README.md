@@ -14,13 +14,17 @@ ZTools is a collection of PowerShell utilities and experimental TypeScript agent
 ZTools/
 ├── src/           # PowerShell scripts and modules
 ├── agents/        # TypeScript agent scripts
+├── scripts/       # Helper PowerShell scripts
+├── docs/          # Additional documentation
+├── tests/         # Pester tests
 ├── AGENTS.md      # Contribution guidelines
+├── CHANGELOG.md   # Release history
 ├── LICENSE        # MIT License
 └── README.md      # Project documentation
 ```
 
 *This layout may evolve as more tools are added.*
-The `agents/` folder hosts TypeScript code while `src/` is reserved for PowerShell utilities.
+The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell utilities, `scripts/` contains automation helpers, and `tests/` holds Pester tests.
 
 ## Prerequisites
 
