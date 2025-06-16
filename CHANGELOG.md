@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Initial repository setup with basic PowerShell tooling structure (PR #2, PR #3).
 - Documented changelog update process to remove timestamp and PR link requirement (PR #33)
 - Updated AGENTS guidelines to drop timestamp and PR link requirement for changelog entries (PR #33)
+- Added script to configure a computer's IP address from a CSV mapping. (PR #)
 - Added ZtCore orchestrator and domain module folders with initial README files. (PR #29)
 - Clarified API roadmap in AGENTS.md (PR #35)
 - Added guidance to display progress bars for long-running tasks in AGENTS.md. (PR #36)
