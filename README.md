@@ -45,6 +45,11 @@ The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell ut
 2. **Browse the tools**
    - PowerShell scripts are under `src/`
    - TypeScript agents are under `agents/`
+3. **Load the modules**
+   Run `Install-ZTools.ps1` to import all modules. Optionally provide a configuration script:
+   ```powershell
+   ./src/Install-ZTools.ps1 -ConfigScript ./scripts/Configure-SharePoint.ps1
+   ```
 
 ## Running Tests
 
