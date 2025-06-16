@@ -16,5 +16,4 @@ All notable changes to this project will be documented in this file.
 - Updated AGENTS guidelines to drop timestamp and PR link requirement for changelog entries
 - Added ZtCore orchestrator and domain module folders with initial README files.
 - Clarified API roadmap in AGENTS.md [2025-06-16 02:18 UTC](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/??)
-- Added comprehensive functional and edge case tests for `Check-Dependencies.ps1`.
 - Added guidance to display progress bars for long-running tasks in AGENTS.md.
