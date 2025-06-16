@@ -65,7 +65,7 @@ Most tools rely on several PowerShell modules. Ensure the following modules are 
 - `Microsoft.Graph`
 - `ActiveDirectory` (requires RSAT tools)
 
-Run `scripts/Check-Dependencies.ps1` to verify that your environment meets these requirements.
+Run `src/Check-Dependencies.ps1` to verify that your environment meets these requirements.
 
 ## Background Thread Jobs
 
