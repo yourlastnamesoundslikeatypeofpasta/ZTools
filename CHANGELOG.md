@@ -28,3 +28,4 @@ All notable changes to this project will be documented in this file.
 - Added `Export-ProductKey` function to retrieve the Windows product key. (PR #49)
 - Moved `Check-Dependencies` script under `src` and updated references. (PR #)
 - Removed duplicate `PowerShell-Guidelines.md` and updated references. (PR #)
+- Added comment-based help to `Check-Dependencies.ps1` script. (PR #)
