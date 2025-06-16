@@ -13,22 +13,6 @@ function Test-WriteStatusModulePath {
     }
 }
 
-function Import-WriteStatusModule {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory, ValueFromPipeline)]
-        [string]$Path
-    )
-    process {
-        try {
-            . $Path
-            Write-Status -Level INFO -Message "Write-Status module loaded from $Path"
-        } catch {
-            Write-Error "Failed to load Write-Status from $Path"
-            throw
-        }
-    }
-}
 
 function Test-PowerShellVersion {
     [CmdletBinding()]
@@ -75,7 +59,7 @@ function Test-RequiredModules {
                         Message = "Module '$mod' is available."
                     }
                 } else {
-                    Write-Status -Level ERROR -Message "Required module '$mod' is missing."
+                    Write-Status -Level WARN -Message "Required module '$mod' is missing."
                     [PSCustomObject]@{
                         Check   = $mod
                         Module  = $mod
@@ -102,20 +86,23 @@ function Test-DependencyState {
     process {
         $result = @()
 
-        $writeStatusPath = Test-WriteStatusModulePath
-        $writeStatusPath | Import-WriteStatusModule
-
         $versionCheck = Test-PowerShellVersion
         $result += $versionCheck
 
-        $requiredModules = @('Pester')
+        $requiredModules = @(
+            'Pester',
+            'PnP.PowerShell',
+            'ExchangeOnlineManagement',
+            'Microsoft.Graph',
+            'ActiveDirectory'
+        )
         $moduleResults = $requiredModules | Test-RequiredModules
         $result += $moduleResults
 
         $missing = $moduleResults | Where-Object { $_.Status -ne "Installed" }
 
         if ($missing) {
-            Write-Status -Level ERROR -Message ("Missing modules: " + ($missing.Module -join ', '))
+            Write-Status -Level WARN -Message ("Missing modules: " + ($missing.Module -join ', '))
         } else {
             Write-Status -Level SUCCESS -Message 'All dependencies are satisfied.'
         }
@@ -125,4 +112,6 @@ function Test-DependencyState {
 }
 
 # Entry point
+$writeStatusPath = Test-WriteStatusModulePath
+. $writeStatusPath
 Test-DependencyState
