@@ -70,7 +70,7 @@ This command generates `coverage.xml` with a JaCoCo-style report.
 - Prefer logging via `Write-Verbose`/`Write-Error` instead of `Write-Host`.
 - Avoid hard-coded paths and accept them as parameters.
 
-For more detail see [PowerShell Guidelines](docs/PowerShell-Guidelines.md).
+For more detail see [PowerShell Guidelines](docs/PowerShell_Guidelines.md).
 
 ## Write-Status Logging Utility
 
