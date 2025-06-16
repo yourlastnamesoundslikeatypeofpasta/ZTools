@@ -42,4 +42,48 @@ Describe 'Get-CPUUsage function' {
             $result | Should -Be $null
         }
     }
+
+    Context 'windows scenario' {
+        BeforeEach {
+            Set-Item -Path variable:IsWindows -Value $true -Force
+            Mock Get-Command { $true } -ParameterFilter { $Name -eq 'Get-Counter' }
+            $counterObj = [pscustomobject]@{ CounterSamples = @( [pscustomobject]@{ CookedValue = 10 }, [pscustomobject]@{ CookedValue = 30 } ) }
+            function Get-Counter { param($CounterPath,$SampleInterval,$MaxSamples) $counterObj }
+        }
+        AfterEach {
+            Remove-Item -Path variable:IsWindows -ErrorAction SilentlyContinue
+            Remove-Item Function:Get-Counter -ErrorAction SilentlyContinue
+        }
+
+        It 'averages Get-Counter values' {
+            Get-CPUUsage | Should -Be 20
+        }
+    }
+
+    Context 'ps returns no values' {
+        BeforeEach {
+            Set-Item -Path variable:IsWindows -Value $false -Force
+            Mock Get-Command { $true } -ParameterFilter { $Name -eq 'ps' }
+            Mock ps { @() }
+        }
+        AfterEach { Remove-Item -Path variable:IsWindows -ErrorAction SilentlyContinue }
+
+        It 'returns null when ps outputs nothing' {
+            Get-CPUUsage | Should -Be $null
+        }
+    }
+
+    Context 'tools missing' {
+        BeforeEach {
+            Set-Item -Path variable:IsWindows -Value $true -Force
+            Mock Get-Command { $null }
+        }
+        AfterEach {
+            Remove-Item -Path variable:IsWindows -ErrorAction SilentlyContinue
+        }
+
+        It 'returns null when neither Get-Counter nor ps exists' {
+            Get-CPUUsage | Should -Be $null
+        }
+    }
 }

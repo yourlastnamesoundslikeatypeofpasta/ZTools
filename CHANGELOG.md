@@ -47,6 +47,7 @@ All notable changes to this project will be documented in this file.
 - Removed auto documentation workflow and composite action file. (PR #)
 - Updated Write-Status to use '>' for INFO messages and adjusted tests. (PR #)
 - Documented repository URL in README clone instructions. (PR #)
+- Added more Pester tests for MonitoringTools functions. (PR #)
 - Instructed contributors to run `src/Check-Dependencies.ps1` before running tests or scripts. (PR #)
 - Removed duplicate bullet about API layer from Architecture section in AGENTS guidelines. (PR #)
 - Documented running Pester tests with the repository configuration in AGENTS guidelines. (PR #)
