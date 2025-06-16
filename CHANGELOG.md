@@ -3,7 +3,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+- Updated MonitoringTools tests for Windows compatibility.
 - Added additional Pester tests for dependency checking functions. (PR #41)
+- Updated Test-RequiredModules to run module checks in parallel using thread jobs and added new tests. (PR #)
 - Updated Pester CI workflow to run on all pull requests. (PR #44)
 - Added AGENTS guidelines and modular TypeScript agent framework (PR #1, PR #4).
 - Introduced Write-Status logging utilities and dependency checking script with Pester tests (PR #8, PR #9, PR #21).
@@ -11,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - Added `Install-ZTools` script to load all modules and optionally run a configuration script. (PR #42)
 - Added `Configure-SharePoint` script to save tenant and app credentials in Credential Manager. (PR #43)
 - Added GitHub workflows for Pester tests and automated documentation generation (PR #18, PR #19, PR #20).
+- Added `ZTools` module manifest and module file for future cmdlet development. (PR #)
 - Documented modular architecture and system requirements (PR #22).
 - Enabled JaCoCo code coverage for Pester tests via `.pester.ps1`. (PR #28)
 - Updated CI workflow to include code coverage results for Pester tests. (PR #30)
@@ -30,8 +33,9 @@ All notable changes to this project will be documented in this file.
 - Documented leaving the pull request number blank and appending entries to the end of the changelog in AGENTS instructions. (PR #)
 - Moved `Check-Dependencies` script under `src` and updated references. (PR #)
 - Removed duplicate `PowerShell-Guidelines.md` and updated references. (PR #)
+- Updated `Install-ZTools` to load module files using a background thread and moved the ThreadJob import. (PR #)
 - Added comment-based help to `Check-Dependencies.ps1` script. (PR #)
 - Verified cleanup of old `docs/PowerShell-Guidelines.md` references. (PR #)
 - Enhanced `Set-ComputerIPAddress` with error handling, pipeline input and administrator validation. (PR #)
-
 - Added shared Test-IsAdministrator function for elevation checks. (PR #)
+- Added PowerShell_References document with links to key module documentation. (PR #)

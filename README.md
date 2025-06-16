@@ -46,9 +46,11 @@ The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell ut
    - PowerShell scripts are under `src/`
    - TypeScript agents are under `agents/`
 3. **Load the modules**
-   Run `Install-ZTools.ps1` to import all modules. Optionally provide a configuration script:
+   Run `Install-ZTools.ps1` to import all scripts or import the `ZTools` module manifest. Optionally provide a configuration script:
    ```powershell
    ./src/Install-ZTools.ps1 -ConfigScript ./scripts/Configure-SharePoint.ps1
+   # or
+   Import-Module ./src/ZTools/ZTools.psd1
    ```
 
 ## Running Tests
@@ -71,6 +73,8 @@ This command generates `coverage.xml` with a JaCoCo-style report.
 - Avoid hard-coded paths and accept them as parameters.
 
 For more detail see [PowerShell Guidelines](docs/PowerShell_Guidelines.md).
+Additional reference links for key modules can be found in
+[PowerShell References](docs/PowerShell_References.md).
 
 ## Write-Status Logging Utility
 
