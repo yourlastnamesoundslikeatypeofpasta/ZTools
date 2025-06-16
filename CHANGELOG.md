@@ -27,3 +27,5 @@ All notable changes to this project will be documented in this file.
 - Documented Start-ThreadJob usage for background tasks in AGENTS.md. (PR #47)
 - Added `Export-ProductKey` function to retrieve the Windows product key. (PR #49)
 - Documented leaving the pull request number blank and appending entries to the end of the changelog in AGENTS instructions. (PR #)
+- Moved `Check-Dependencies` script under `src` and updated references. (PR #)
+- Removed duplicate `PowerShell-Guidelines.md` and updated references. (PR #)
