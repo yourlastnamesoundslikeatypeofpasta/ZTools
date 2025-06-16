@@ -100,11 +100,6 @@ Write-Status -Level WARN -Message 'Low disk space' -LogFile 'C:\temp\build.log'
 Contributions are welcome! Feel free to open an issue or submit a pull request with improvements or new scripts. Please include documentation for any new tools.
 Refer to `AGENTS.md` and `docs/PowerShell_Guidelines.md` for naming conventions and pipeline support when adding new PowerShell scripts.
 
-## Inputs
-
-<!-- AUTO-DOC-INPUT:START - Do not remove or modify this section -->
-<!-- AUTO-DOC-INPUT:END -->
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

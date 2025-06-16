@@ -42,3 +42,4 @@ All notable changes to this project will be documented in this file.
 - Clarified PowerShell function guidelines in `AGENTS.md`, including when to use
   `Begin`, `Process`, and `End` blocks. (PR #)
 - Restored composite GitHub Action and README markers for automatic documentation. (PR #)
+- Removed auto documentation workflow and composite action file. (PR #)
