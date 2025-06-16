@@ -52,8 +52,12 @@ The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell ut
    # or
    Import-Module ./src/ZTools/ZTools.psd1
    ```
+4. **Check dependencies**
+   Run `src/Check-Dependencies.ps1` before using the tools to ensure all required modules are installed.
 
 ## Running Tests
+
+Before running tests, execute `src/Check-Dependencies.ps1` to verify all required modules are available.
 
 Pester tests live in the `tests/` folder. A configuration file `.pester.ps1`
 enables code coverage reporting. Run tests from the repository root:
