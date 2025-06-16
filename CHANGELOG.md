@@ -23,3 +23,4 @@ All notable changes to this project will be documented in this file.
 - Added guidance to display progress bars for long-running tasks in AGENTS.md.
 - Added ZtEntity base class for cross-module data exchange.
 - Added Pester tests for Set-SharePointConfig, Install-ZTools configuration script handling and ZtEntity.
+- Documented Start-ThreadJob usage for background tasks in AGENTS.md.
