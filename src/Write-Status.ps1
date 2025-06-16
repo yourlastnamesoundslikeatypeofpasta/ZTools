@@ -7,7 +7,8 @@ Writes a formatted status message and logs it to a file.
 (`Write-Verbose`, `Write-Debug`, `Write-Warning`, `Write-Error`) so standard
 preference variables control what is displayed. Messages are also appended to a
 log file. A default log file is created under the repository's `logs` folder but
-the path can be overridden via the `LogFile` parameter.
+the path can be overridden via the `LogFile` parameter. Call
+`Set-WriteStatusConfig` to change the default log directory or error log path.
 
 .PARAMETER Level
 The level of the message: INFO, WARN, ERROR, SUCCESS or DEBUG.
@@ -41,6 +42,36 @@ $script:LogDirectory   = Join-Path -Path $repoRoot -ChildPath 'logs'
 $script:ErrorLogFile   = Join-Path -Path $script:LogDirectory -ChildPath 'error.log'
 $script:StatusLogFile  = $null
 $script:LogHour        = $null
+
+function Set-WriteStatusConfig {
+    <#
+    .SYNOPSIS
+    Sets default paths used by Write-Status.
+
+    .PARAMETER LogDirectory
+    Directory where hourly logs are created.
+
+    .PARAMETER ErrorLogFile
+    Path to the persistent error log.
+    #>
+    [CmdletBinding()]
+    param(
+        [string]$LogDirectory,
+        [string]$ErrorLogFile
+    )
+
+    if ($PSBoundParameters.ContainsKey('LogDirectory')) {
+        $script:LogDirectory = $LogDirectory
+    }
+
+    if ($PSBoundParameters.ContainsKey('ErrorLogFile')) {
+        $script:ErrorLogFile = $ErrorLogFile
+    }
+
+    # Reset rotating log file so new settings take effect
+    $script:StatusLogFile = $null
+    $script:LogHour       = $null
+}
 
 function New-LogDirectory {
     <#

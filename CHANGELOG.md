@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - Updated MonitoringTools tests for Windows compatibility.
 - Added additional Pester tests for dependency checking functions. (PR #41)
 - Updated Test-RequiredModules to run module checks in parallel using thread jobs and added new tests. (PR #)
+- Added Set-WriteStatusConfig to customize logging paths and updated README with examples. (PR #)
 - Updated Pester CI workflow to run on all pull requests. (PR #44)
 - Added AGENTS guidelines and modular TypeScript agent framework (PR #1, PR #4).
 - Introduced Write-Status logging utilities and dependency checking script with Pester tests (PR #8, PR #9, PR #21).
