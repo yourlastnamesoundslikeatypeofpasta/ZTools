@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - Initial repository setup with basic PowerShell tooling structure (PR #2, PR #3).
 - Documented changelog update process to remove timestamp and PR link requirement (PR #33)
 - Updated AGENTS guidelines to drop timestamp and PR link requirement for changelog entries (PR #33)
+- Added `Set-ComputerIPAddress` support tool to configure a static IP address directly. (PR #)
 - Added ZtCore orchestrator and domain module folders with initial README files. (PR #29)
 - Clarified API roadmap in AGENTS.md (PR #35)
 - Added guidance to display progress bars for long-running tasks in AGENTS.md. (PR #36)
@@ -35,4 +36,6 @@ All notable changes to this project will be documented in this file.
 - Updated `Install-ZTools` to load module files using a background thread and moved the ThreadJob import. (PR #)
 - Added comment-based help to `Check-Dependencies.ps1` script. (PR #)
 - Verified cleanup of old `docs/PowerShell-Guidelines.md` references. (PR #)
+- Enhanced `Set-ComputerIPAddress` with error handling, pipeline input and administrator validation. (PR #)
+- Added shared Test-IsAdministrator function for elevation checks. (PR #)
 - Added PowerShell_References document with links to key module documentation. (PR #)
