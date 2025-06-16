@@ -29,7 +29,7 @@ Describe 'Write-Status' {
         }
 
         It 'logs ERROR with X symbol' {
-            Write-Status -Level ERROR -Message 'error message'
+            Write-Status -Level ERROR -Message 'error message' -ErrorAction SilentlyContinue
             (Get-Content $script:StatusLogFile | Select-Object -Last 1) | Should -Match '\[X\] error message'
         }
 
@@ -61,7 +61,7 @@ Describe 'Write-Status' {
         }
 
         It 'logs errors to error log' {
-            Write-Status -Level ERROR -Message 'failure'
+            Write-Status -Level ERROR -Message 'failure' -ErrorAction SilentlyContinue
             Test-Path $script:ErrorLogFile | Should -BeTrue
             (Get-Content $script:ErrorLogFile | Select-Object -Last 1) | Should -Match 'failure'
         }
