@@ -8,4 +8,5 @@ All notable changes to this project will be documented in this file.
 - Expanded documentation with PowerShell guidelines and repository structure details ([PR #12](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/12), [PR #15](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/15)).
 - Added GitHub workflows for Pester tests and automated documentation generation ([PR #18](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/18), [PR #19](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/19), [PR #20](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/20)).
 - Documented modular architecture and system requirements ([PR #22](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/22)).
+- Enabled JaCoCo code coverage for Pester tests via `.pester.ps1`.
 - Initial repository setup with basic PowerShell tooling structure ([PR #2](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/2), [PR #3](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/3)).
