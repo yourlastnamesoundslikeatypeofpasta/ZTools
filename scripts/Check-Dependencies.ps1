@@ -13,22 +13,6 @@ function Test-WriteStatusModulePath {
     }
 }
 
-function Import-WriteStatusModule {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory, ValueFromPipeline)]
-        [string]$Path
-    )
-    process {
-        try {
-            . $Path
-            Write-Status -Level INFO -Message "Write-Status module loaded from $Path"
-        } catch {
-            Write-Error "Failed to load Write-Status from $Path"
-            throw
-        }
-    }
-}
 
 function Test-PowerShellVersion {
     [CmdletBinding()]
@@ -103,7 +87,8 @@ function Test-DependencyState {
         $result = @()
 
         $writeStatusPath = Test-WriteStatusModulePath
-        $writeStatusPath | Import-WriteStatusModule
+        . $writeStatusPath
+        Write-Status -Level INFO -Message "Write-Status module loaded from $writeStatusPath"
 
         $versionCheck = Test-PowerShellVersion
         $result += $versionCheck
