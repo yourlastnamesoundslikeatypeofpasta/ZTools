@@ -9,3 +9,39 @@ Describe 'Check-Dependencies script' {
         }
     }
 }
+Describe 'Check-Dependencies functions' {
+    BeforeAll {
+        $scriptPath = Join-Path $PSScriptRoot '..' 'scripts' 'Check-Dependencies.ps1'
+        . $scriptPath
+    }
+
+    It 'reports Installed when module exists' {
+        Mock Get-Module { @{ Name = 'Pester' } }
+        $result = 'Pester' | Test-RequiredModules
+        $result.Status | Should -Be 'Installed'
+    }
+
+    It 'reports Missing when module does not exist' {
+        Mock Get-Module { $null }
+        $result = 'MissingModule' | Test-RequiredModules
+        $result.Status | Should -Be 'Missing'
+    }
+
+    It 'returns Passed for PowerShell 7 or higher' {
+        $original = $PSVersionTable.PSVersion
+        $PSVersionTable.PSVersion = [version]'7.1'
+        Mock Write-Status {}
+        $result = Test-PowerShellVersion
+        $result.Status | Should -Be 'Passed'
+        $PSVersionTable.PSVersion = $original
+    }
+
+    It 'returns Failed for PowerShell below version 7' {
+        $original = $PSVersionTable.PSVersion
+        $PSVersionTable.PSVersion = [version]'6.0'
+        Mock Write-Status {}
+        $result = Test-PowerShellVersion
+        $result.Status | Should -Be 'Failed'
+        $PSVersionTable.PSVersion = $original
+    }
+}
