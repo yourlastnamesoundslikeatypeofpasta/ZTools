@@ -5,8 +5,7 @@ Describe 'Write-Status' {
     }
 
     BeforeEach {
-        $script:LogDirectory = Join-Path $TestDrive 'logs'
-        $script:ErrorLogFile = Join-Path $script:LogDirectory 'error.log'
+        Set-WriteStatusConfig -LogDirectory (Join-Path $TestDrive 'logs') -ErrorLogFile (Join-Path $TestDrive 'logs' 'error.log')
         $script:StatusLogFile = $null
         $script:LogHour = $null
     }
@@ -81,7 +80,7 @@ Describe 'Write-Status' {
         It 'rotates log file when hour changes' {
             Write-Status -Level INFO -Message 'first'
             $first = $script:StatusLogFile
-            $script:LogDirectory = Join-Path $TestDrive 'rotated'
+            Set-WriteStatusConfig -LogDirectory (Join-Path $TestDrive 'rotated')
             $script:StatusLogFile = $null
             $script:LogHour = '1990-01-01_00'
             Write-Status -Level INFO -Message 'second'

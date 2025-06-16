@@ -91,8 +91,6 @@ Write-Status -Level WARN -Message 'Low disk space' -LogFile 'C:\temp\build.log'
 # Fast logging
 Write-Status -Level SUCCESS -Message 'Finished' -Fast
 
-```
-
 `Write-Status` maps levels to `Write-Verbose`, `Write-Warning`, `Write-Error` or
 `Write-Debug`, so built-in switches like `-Verbose` control console output.
 
@@ -100,9 +98,6 @@ Write-Status -Level SUCCESS -Message 'Finished' -Fast
 
 Contributions are welcome! Feel free to open an issue or submit a pull request with improvements or new scripts. Please include documentation for any new tools.
 Refer to `AGENTS.md` and `docs/PowerShell_Guidelines.md` for naming conventions and pipeline support when adding new PowerShell scripts.
-
-<!--doc_begin-->
-<!--doc_end-->
 
 ## License
 
