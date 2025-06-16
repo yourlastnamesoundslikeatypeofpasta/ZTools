@@ -1,0 +1,36 @@
+name: CI Pester Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PowerShell
+        uses: actions/setup-powershell@v3
+        with:
+          pwsh-version: '7.5.1'
+      - name: Install Pester
+        shell: pwsh
+        run: Install-Module Pester -Force -Scope CurrentUser -SkipPublisherCheck
+      - name: Run Pester tests
+        shell: pwsh
+        run: |
+          Invoke-Pester -Path ./tests -Output Detailed -CI
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: PesterResults-${{ matrix.os }}
+          path: |
+            **/TestResult*.xml
+            **/Pester.TestResults.xml
+          if-no-files-found: ignore
