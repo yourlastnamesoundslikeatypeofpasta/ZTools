@@ -1,6 +1,6 @@
 Describe 'Check-Dependencies script' {
     It 'reports dependency status for all modules' {
-        $scriptPath = Join-Path $PSScriptRoot '..' 'scripts' 'Check-Dependencies.ps1'
+        $scriptPath = Join-Path $PSScriptRoot '..' 'src' 'Check-Dependencies.ps1'
         $result = & $scriptPath
 
         $expected = 'Pester','PnP.PowerShell','ExchangeOnlineManagement','Microsoft.Graph','ActiveDirectory'
@@ -11,7 +11,7 @@ Describe 'Check-Dependencies script' {
 }
 Describe 'Check-Dependencies functions' {
     BeforeAll {
-        $scriptPath = Join-Path $PSScriptRoot '..' 'scripts' 'Check-Dependencies.ps1'
+        $scriptPath = Join-Path $PSScriptRoot '..' 'src' 'Check-Dependencies.ps1'
         . $scriptPath
     }
 
