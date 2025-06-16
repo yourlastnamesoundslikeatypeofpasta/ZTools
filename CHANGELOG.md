@@ -17,3 +17,4 @@ All notable changes to this project will be documented in this file.
 - Added ZtCore orchestrator and domain module folders with initial README files.
 - Clarified API roadmap in AGENTS.md [2025-06-16 02:18 UTC](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/??)
 - Added guidance to display progress bars for long-running tasks in AGENTS.md.
+- Added ZtEntity base class for cross-module data exchange.
