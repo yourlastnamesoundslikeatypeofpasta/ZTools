@@ -36,3 +36,5 @@ All notable changes to this project will be documented in this file.
 - Added comment-based help to `Check-Dependencies.ps1` script. (PR #)
 - Verified cleanup of old `docs/PowerShell-Guidelines.md` references. (PR #)
 - Added PowerShell_References document with links to key module documentation. (PR #)
+- Clarified PowerShell function guidelines in `AGENTS.md`, including when to use
+  `Begin`, `Process`, and `End` blocks. (PR #)
