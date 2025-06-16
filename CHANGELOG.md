@@ -46,3 +46,4 @@ All notable changes to this project will be documented in this file.
 - Removed auto documentation workflow and composite action file. (PR #)
 - Updated Write-Status to use '>' for INFO messages and adjusted tests. (PR #)
 - Documented repository URL in README clone instructions. (PR #)
+- Added more Pester tests for MonitoringTools functions. (PR #)
