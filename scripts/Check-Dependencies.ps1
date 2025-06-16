@@ -59,7 +59,7 @@ function Test-RequiredModules {
                         Message = "Module '$mod' is available."
                     }
                 } else {
-                    Write-Status -Level ERROR -Message "Required module '$mod' is missing."
+                    Write-Status -Level WARN -Message "Required module '$mod' is missing."
                     [PSCustomObject]@{
                         Check   = $mod
                         Module  = $mod
@@ -86,8 +86,6 @@ function Test-DependencyState {
     process {
         $result = @()
 
-        $writeStatusPath = Test-WriteStatusModulePath
-
         $versionCheck = Test-PowerShellVersion
         $result += $versionCheck
 
@@ -104,7 +102,7 @@ function Test-DependencyState {
         $missing = $moduleResults | Where-Object { $_.Status -ne "Installed" }
 
         if ($missing) {
-            Write-Status -Level ERROR -Message ("Missing modules: " + ($missing.Module -join ', '))
+            Write-Status -Level WARN -Message ("Missing modules: " + ($missing.Module -join ', '))
         } else {
             Write-Status -Level SUCCESS -Message 'All dependencies are satisfied.'
         }
