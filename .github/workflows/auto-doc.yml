@@ -26,9 +26,9 @@ jobs:
             README.md
 
       - name: Commit changes
-        if: steps.verify.outputs.files_changed == 'true'
+        if: steps.verify.outputs.files_changed == 'true' && github.event_name == 'push'
         uses: stefanzweifel/git-auto-commit-action@v6
         with:
-          branch: ${{ github.head_ref }}
+          branch: main
           commit_message: "chore: update README with auto-doc"
           file_pattern: README.md
