@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+- Added comment-based help to `Check-Dependencies.ps1`. (PR #50)
 - Added additional Pester tests for dependency checking functions. (PR #41)
 - Updated Pester CI workflow to run on all pull requests. (PR #44)
 - Added AGENTS guidelines and modular TypeScript agent framework (PR #1, PR #4).

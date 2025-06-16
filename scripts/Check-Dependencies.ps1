@@ -1,3 +1,20 @@
+<#
+.SYNOPSIS
+Checks required PowerShell modules and the host PowerShell version.
+
+.DESCRIPTION
+`Check-Dependencies.ps1` verifies that the current session is running on
+PowerShell 7 or later and ensures a set of modules are installed. The script
+loads `Write-Status` for formatted output, calls `Test-PowerShellVersion` to
+validate the host version and uses `Test-RequiredModules` to check that
+`Pester`, `PnP.PowerShell`, `ExchangeOnlineManagement`, `Microsoft.Graph` and
+`ActiveDirectory` are available.
+
+.EXAMPLE
+PS> ./scripts/Check-Dependencies.ps1
+Runs all checks and returns an object summarizing module and version status.
+#>
+
 function Test-WriteStatusModulePath {
     [CmdletBinding()]
     param()
