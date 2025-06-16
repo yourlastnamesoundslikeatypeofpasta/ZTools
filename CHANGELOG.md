@@ -3,4 +3,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-- Initial repository setup with basic PowerShell tooling structure.
+- Added AGENTS guidelines and modular TypeScript agent framework ([PR #1](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/1), [PR #4](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/4)).
+- Introduced Write-Status logging utilities and dependency checking script with Pester tests ([PR #8](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/8), [PR #9](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/9), [PR #21](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/21)).
+- Expanded documentation with PowerShell guidelines and repository structure details ([PR #12](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/12), [PR #15](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/15)).
+- Added GitHub workflows for Pester tests and automated documentation generation ([PR #18](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/18), [PR #19](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/19), [PR #20](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/20)).
+- Documented modular architecture and system requirements ([PR #22](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/22)).
+- Initial repository setup with basic PowerShell tooling structure ([PR #2](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/2), [PR #3](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/pull/3)).
