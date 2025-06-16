@@ -26,3 +26,4 @@ All notable changes to this project will be documented in this file.
 - Added EntraID module with functions to query Microsoft Graph and return `ZtEntity` objects. (PR #48)
 - Documented Start-ThreadJob usage for background tasks in AGENTS.md. (PR #47)
 - Added `Export-ProductKey` function to retrieve the Windows product key. (PR #49)
+- Documented leaving the pull request number blank and appending entries to the end of the changelog in AGENTS instructions. (PR #)
