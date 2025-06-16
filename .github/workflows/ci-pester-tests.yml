@@ -21,7 +21,7 @@ jobs:
         shell: pwsh
         run: |
           $Config = ./.pester.ps1
-          Invoke-Pester -Configuration $Config -Output Detailed -CI
+          Invoke-Pester -Configuration $Config
       - name: Upload test artifacts
         if: always()
         uses: actions/upload-artifact@v4
