@@ -47,7 +47,7 @@ interfaces.
 - Document new or updated agents in `agents/AGENT_ROLES.md`.
  - Run the agents using your preferred workflow (for example `ts-node`). Currently no automated tests exist for this code.
 
-The repository uses Pester for testing PowerShell scripts. If any tests exist under the `tests/` directory, run them with `pwsh -Command Invoke-Pester` before committing. If Pester is not installed, install it via PowerShell's `Install-Module -Name Pester -Force`.
+The repository uses Pester for testing PowerShell scripts. If any tests exist under the `tests/` directory, run them with `pwsh -Command "Invoke-Pester -Configuration (./.pester.ps1)"` before committing. This matches the README instructions and ensures coverage results are generated. If Pester is not installed, install it via PowerShell's `Install-Module -Name Pester -Force`.
 
 Pull request summaries should mention notable changes and reference any tests run.
 
