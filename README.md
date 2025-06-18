@@ -1,5 +1,7 @@
 # ZTools
 [![CI Pester Tests](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/actions/workflows/ci-pester-tests.yml/badge.svg)](https://github.com/yourlastnamesoundslikeatypeofpasta/ZTools/actions/workflows/ci-pester-tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![codecov](https://codecov.io/gh/yourlastnamesoundslikeatypeofpasta/ZTools/branch/main/graph/badge.svg)](https://codecov.io/gh/yourlastnamesoundslikeatypeofpasta/ZTools)
 
 ZTools is a collection of PowerShell utilities and experimental TypeScript agents used for automation tasks. The repository is currently a skeleton that will be populated with organized tools over time.
 
