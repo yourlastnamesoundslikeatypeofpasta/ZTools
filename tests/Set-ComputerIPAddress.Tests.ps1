@@ -50,4 +50,24 @@ Describe 'Set-ComputerIPAddress function' {
         $obj | Set-ComputerIPAddress
         Assert-MockCalled -CommandName New-NetIPAddress -Times 1
     }
+    It 'logs error when not administrator' {
+        Mock Test-IsAdministrator { $false }
+        Set-ComputerIPAddress -IPAddress '10.0.0.7'
+        Assert-MockCalled -CommandName Write-Status -ParameterFilter { $Level -eq 'ERROR' } -Times 1
+    }
+
+    It 'removes existing addresses and routes' {
+        Mock Get-NetIPConfiguration { [pscustomobject]@{ IPv4Address = 'x'; IPv4DefaultGateway = 'y' } }
+        Set-ComputerIPAddress -IPAddress '10.0.0.8'
+        Assert-MockCalled -CommandName Remove-NetIPAddress -Times 1
+        Assert-MockCalled -CommandName Remove-NetRoute -Times 1
+    }
+
+    It 'throws and logs when New-NetIPAddress fails' {
+        Mock New-NetIPAddress { throw "fail" }
+        Mock Write-Error {}
+        { Set-ComputerIPAddress -IPAddress '10.0.0.9' } | Should -Throw
+        Assert-MockCalled -CommandName Write-Error -Times 1
+    }
+
 }

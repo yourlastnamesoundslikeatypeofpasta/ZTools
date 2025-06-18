@@ -88,4 +88,19 @@ Describe 'Write-Status' {
         }
 
     }
+    Context "console colors" {
+        BeforeEach {
+            Mock Write-Host {}
+        $VerbosePreference = "Continue"
+        }
+        It "writes INFO in cyan" {
+            Write-Status -Level INFO -Message "color"
+            Assert-MockCalled -CommandName Write-Host -Times 1 -ParameterFilter { $ForegroundColor -eq "Cyan" }
+        }
+        It "writes SUCCESS in green" {
+            Write-Status -Level SUCCESS -Message "good"
+            Assert-MockCalled -CommandName Write-Host -Times 1 -ParameterFilter { $ForegroundColor -eq "Green" }
+        }
+    }
+
 }
