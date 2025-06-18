@@ -43,3 +43,6 @@ All notable changes to this project will be documented in this file.
   `Begin`, `Process`, and `End` blocks. (PR #)
 - Updated Write-Status to use '>' for INFO messages and adjusted tests. (PR #)
 - Documented repository URL in README clone instructions. (PR #)
+- Added SolarWinds Service Desk wrapper module with session and ticket commands. (PR #)
+- Added configuration script for SolarWinds Service Desk storing base URL and API token in Credential Manager. (PR #)
+- SolarWinds Service Desk cmdlets now return `[ZtEntity]` objects. (PR #)
