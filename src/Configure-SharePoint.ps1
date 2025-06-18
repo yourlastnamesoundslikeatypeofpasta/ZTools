@@ -34,7 +34,8 @@ function Set-SharePointConfig {
     begin {
         $writeStatusPath = Join-Path -Path $PSScriptRoot -ChildPath 'Write-Status.ps1'
         . $writeStatusPath
-        Import-Module CredentialManager -ErrorAction Stop
+        # Import SecretManagement for cross-platform credential storage
+        Import-Module Microsoft.PowerShell.SecretManagement -ErrorAction Stop
     }
     process {
         if (-not $TenantId) {
@@ -50,10 +51,15 @@ function Set-SharePointConfig {
         }
 
         try {
-            New-StoredCredential -Target 'ZTools.SharePoint.TenantId' -Type Generic -UserName 'TenantId' -Password $TenantId -Persist LocalMachine | Out-Null
-            New-StoredCredential -Target 'ZTools.SharePoint.Client' -Credentials $ClientCredential -Persist LocalMachine | Out-Null
-            New-StoredCredential -Target 'ZTools.SharePoint.User' -Credentials $UserCredential -Persist LocalMachine | Out-Null
-            Write-Status -Level SUCCESS -Message 'Configuration stored in Credential Manager.' -Fast
+            # Store tenant ID as a credential
+            $tenantCred = [pscredential]::new('TenantId', (ConvertTo-SecureString $TenantId -AsPlainText -Force))
+            Set-Secret -Name 'ZTools.SharePoint.TenantId' -Secret $tenantCred
+
+            # Store app registration and user credentials
+            Set-Secret -Name 'ZTools.SharePoint.Client' -Secret $ClientCredential
+            Set-Secret -Name 'ZTools.SharePoint.User'   -Secret $UserCredential
+
+            Write-Status -Level SUCCESS -Message 'Configuration stored in SecretStore.' -Fast
         } catch {
             Write-Status -Level ERROR -Message $_.Exception.Message -Fast
             throw

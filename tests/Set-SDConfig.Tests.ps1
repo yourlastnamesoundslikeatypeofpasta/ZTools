@@ -15,15 +15,15 @@ Describe 'Set-SDConfig function' {
         Remove-Item function:Set-SDConfig -ErrorAction Ignore
         . (Join-Path $root 'ZtCore' 'ZtEntity.ps1')
         . (Join-Path $root 'SolarWindsSD' 'Set-SDConfig.ps1')
-        function New-StoredCredential {}
+        function Set-Secret {}
         function Import-Module {}
-        Mock New-StoredCredential {}
+        Mock Set-Secret {}
         Mock Import-Module {}
     }
 
     It 'stores values when parameters are provided' {
         Set-SDConfig -BaseUrl 'https://api.samanage.com' -ApiToken 'token'
-        Assert-MockCalled -CommandName New-StoredCredential -Times 2
+        Assert-MockCalled -CommandName Set-Secret -Times 2
     }
 
     It 'prompts for missing values' {
@@ -33,7 +33,7 @@ Describe 'Set-SDConfig function' {
     }
 
     It 'logs error when storage fails' {
-        Mock New-StoredCredential { throw 'fail' }
+        Mock Set-Secret { throw 'fail' }
         Mock Write-Status {}
         { Set-SDConfig -BaseUrl 'url' -ApiToken 'token' } | Should -Throw
         Assert-MockCalled -CommandName Write-Status -ParameterFilter { $Level -eq 'ERROR' } -Times 1

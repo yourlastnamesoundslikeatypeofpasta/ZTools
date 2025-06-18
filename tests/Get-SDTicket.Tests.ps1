@@ -14,13 +14,16 @@ Describe 'Get-SDTicket function' {
         . (Join-Path $root 'SolarWindsSD' 'Set-SDConfig.ps1')
         . (Join-Path $root 'SolarWindsSD' 'Get-SDTicket.ps1')
         Mock Invoke-RestMethod { @{ id = 1 } }
-        function New-StoredCredential {}
-        function Get-StoredCredential {}
+        function Set-Secret {}
+        function Get-Secret {}
+        function Get-SecretInfo {}
         function Import-Module {}
-        Mock New-StoredCredential {}
+        Mock Set-Secret {}
         Mock Import-Module {}
-        Mock Get-StoredCredential {
-            [pscustomobject]@{ Password = if ($Target -match 'ApiToken') { 'token' } else { 'https://api.samanage.com' } }
+        Mock Get-SecretInfo { $true }
+        Mock Get-Secret {
+            $value = if ($Name -match 'ApiToken') { 'token' } else { 'https://api.samanage.com' }
+            [pscredential]::new('user', (ConvertTo-SecureString $value -AsPlainText -Force))
         }
         Set-SDConfig -BaseUrl 'https://api.samanage.com' -ApiToken 'token'
         New-SDSession

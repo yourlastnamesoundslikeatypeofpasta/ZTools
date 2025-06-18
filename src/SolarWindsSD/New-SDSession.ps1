@@ -29,20 +29,29 @@ function New-SDSession {
         $rootPath = Split-Path $PSScriptRoot -Parent
         $ztPath   = Join-Path -Path $rootPath -ChildPath 'ZtCore/ZtEntity.ps1'
         if (-not ('ZtEntity' -as [type])) { . $ztPath }
-        Import-Module CredentialManager -ErrorAction SilentlyContinue
+        # Use SecretManagement/SecretStore instead of Windows Credential Manager
+        Import-Module Microsoft.PowerShell.SecretManagement -ErrorAction SilentlyContinue
+
+        # Retrieve API token from the SecretStore if it exists
         if (-not $ApiToken) {
-            $cred = Get-StoredCredential -Target 'ZTools.SolarWindsSD.ApiToken'
-            if ($cred) { $ApiToken = $cred.Password }
+            if (Get-SecretInfo -Name 'ZTools.SolarWindsSD.ApiToken' -ErrorAction SilentlyContinue) {
+                $cred = Get-Secret -Name 'ZTools.SolarWindsSD.ApiToken'
+                if ($cred) { $ApiToken = $cred.GetNetworkCredential().Password }
+            }
         }
+
+        # Retrieve base URL from the SecretStore if available
         if (-not $BaseUrl) {
-            $cred = Get-StoredCredential -Target 'ZTools.SolarWindsSD.BaseUrl'
-            if ($cred) { $BaseUrl = $cred.Password }
+            if (Get-SecretInfo -Name 'ZTools.SolarWindsSD.BaseUrl' -ErrorAction SilentlyContinue) {
+                $cred = Get-Secret -Name 'ZTools.SolarWindsSD.BaseUrl'
+                if ($cred) { $BaseUrl = $cred.GetNetworkCredential().Password }
+            }
         }
         if (-not $BaseUrl) {
             $BaseUrl = "https://$Region.samanage.com"
         }
         if (-not $ApiToken) {
-            throw 'API token not provided and not found in Credential Manager.'
+            throw 'API token not provided and not found in secret store.'
         }
     }
     process {
