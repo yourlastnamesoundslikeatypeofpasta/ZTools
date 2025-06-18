@@ -28,18 +28,24 @@ function Set-SDConfig {
         # Use SecretManagement/SecretStore for cross-platform credential storage
         Import-Module Microsoft.PowerShell.SecretManagement -ErrorAction Stop
 
-        # Ensure a default vault exists so secrets can be saved
-        if (-not (Get-SecretVault -ErrorAction SilentlyContinue)) {
-            if (-not (Get-Module -ListAvailable Microsoft.PowerShell.SecretStore)) {
-                Write-Status -Level ERROR -Message 'Microsoft.PowerShell.SecretStore module not found.' -Fast
-                throw 'SecretStore module is required but not installed.'
-            }
+        # Ensure a default vault exists so secrets can be saved.
+        # Some test environments may not have the SecretManagement cmdlets
+        # available, so verify the commands exist before calling them.
+        if (Get-Command -Name Get-SecretVault -ErrorAction SilentlyContinue) {
+            if (-not (Get-SecretVault -ErrorAction SilentlyContinue)) {
+                if (-not (Get-Module -ListAvailable Microsoft.PowerShell.SecretStore)) {
+                    Write-Status -Level ERROR -Message 'Microsoft.PowerShell.SecretStore module not found.' -Fast
+                    throw 'SecretStore module is required but not installed.'
+                }
 
-            if (-not (Get-SecretVault -Name 'SecretStore' -ErrorAction SilentlyContinue)) {
-                Register-SecretVault -Name 'SecretStore' -ModuleName Microsoft.PowerShell.SecretStore -DefaultVault -ErrorAction Stop
-            } else {
-                Set-SecretVaultDefault -Name 'SecretStore'
+                if (-not (Get-SecretVault -Name 'SecretStore' -ErrorAction SilentlyContinue)) {
+                    Register-SecretVault -Name 'SecretStore' -ModuleName Microsoft.PowerShell.SecretStore -DefaultVault -ErrorAction Stop
+                } else {
+                    Set-SecretVaultDefault -Name 'SecretStore'
+                }
             }
+        } else {
+            Write-Status -Level WARN -Message 'SecretManagement commands not available; skipping vault check.' -Fast
         }
     }
     process {
