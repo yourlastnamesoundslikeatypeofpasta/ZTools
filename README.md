@@ -52,8 +52,12 @@ The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell ut
    # or
    Import-Module ./src/ZTools/ZTools.psd1
    ```
+4. **Check dependencies**
+   Run `src/Check-Dependencies.ps1` before using the tools to ensure all required modules are installed.
 
 ## Running Tests
+
+Before running tests, execute `src/Check-Dependencies.ps1` to verify all required modules are available.
 
 Pester tests live in the `tests/` folder. A configuration file `.pester.ps1`
 enables code coverage reporting. Run tests from the repository root:
@@ -88,9 +92,8 @@ Write-Status -Level INFO -Message 'Starting build'
 # Redirect logs
 Write-Status -Level WARN -Message 'Low disk space' -LogFile 'C:\temp\build.log'
 
-# Pipeline support
-'Finished' | Write-Status -Level SUCCESS -Fast
-```
+# Fast logging
+Write-Status -Level SUCCESS -Message 'Finished' -Fast
 
 `Write-Status` maps levels to `Write-Verbose`, `Write-Warning`, `Write-Error` or
 `Write-Debug`, so built-in switches like `-Verbose` control console output.
@@ -99,9 +102,6 @@ Write-Status -Level WARN -Message 'Low disk space' -LogFile 'C:\temp\build.log'
 
 Contributions are welcome! Feel free to open an issue or submit a pull request with improvements or new scripts. Please include documentation for any new tools.
 Refer to `AGENTS.md` and `docs/PowerShell_Guidelines.md` for naming conventions and pipeline support when adding new PowerShell scripts.
-
-<!--doc_begin-->
-<!--doc_end-->
 
 ## License
 

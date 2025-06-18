@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - Updated MonitoringTools tests for Windows compatibility.
 - Added additional Pester tests for dependency checking functions. (PR #41)
 - Updated Test-RequiredModules to run module checks in parallel using thread jobs and added new tests. (PR #)
+- Added Set-WriteStatusConfig to customize logging paths and updated README with examples. (PR #)
 - Updated Pester CI workflow to run on all pull requests. (PR #44)
 - Added AGENTS guidelines and modular TypeScript agent framework (PR #1, PR #4).
 - Introduced Write-Status logging utilities and dependency checking script with Pester tests (PR #8, PR #9, PR #21).
@@ -18,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - Enabled JaCoCo code coverage for Pester tests via `.pester.ps1`. (PR #28)
 - Updated CI workflow to include code coverage results for Pester tests. (PR #30)
 - Fixed Pester execution in GitHub Actions by relying on configuration instead of the `-CI` parameter. (PR #37)
+- Removed pipeline input support from Write-Status and updated tests and documentation. (PR #)
 - Initial repository setup with basic PowerShell tooling structure (PR #2, PR #3).
 - Documented changelog update process to remove timestamp and PR link requirement (PR #33)
 - Updated AGENTS guidelines to drop timestamp and PR link requirement for changelog entries (PR #33)
@@ -41,8 +43,14 @@ All notable changes to this project will be documented in this file.
 - Added PowerShell_References document with links to key module documentation. (PR #)
 - Clarified PowerShell function guidelines in `AGENTS.md`, including when to use
   `Begin`, `Process`, and `End` blocks. (PR #)
+- Restored composite GitHub Action and README markers for automatic documentation. (PR #)
+- Removed auto documentation workflow and composite action file. (PR #)
 - Updated Write-Status to use '>' for INFO messages and adjusted tests. (PR #)
 - Documented repository URL in README clone instructions. (PR #)
 - Added SolarWinds Service Desk wrapper module with session and ticket commands. (PR #)
 - Added configuration script for SolarWinds Service Desk storing base URL and API token in Credential Manager. (PR #)
 - SolarWinds Service Desk cmdlets now return `[ZtEntity]` objects. (PR #)
+- Added more Pester tests for MonitoringTools functions. (PR #)
+- Instructed contributors to run `src/Check-Dependencies.ps1` before running tests or scripts. (PR #)
+- Removed duplicate bullet about API layer from Architecture section in AGENTS guidelines. (PR #)
+- Documented running Pester tests with the repository configuration in AGENTS guidelines. (PR #)

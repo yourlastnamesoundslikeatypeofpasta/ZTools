@@ -10,7 +10,6 @@ The project is hosted at [https://github.com/yourlastnamesoundslikeatypeofpasta/
 - Handle failures gracefully with `try/catch` blocks and fallback logic.
 - Secure configuration using PowerShell credential management and sign scripts when possible.
 - Unit test new features after implementation to maintain reliability.
-- Plan for an API layer so these tools can be accessed by web or GPT-based clients.
 
 ## Module Development Roadmap
 
@@ -47,18 +46,14 @@ interfaces.
 - Document new or updated agents in `agents/AGENT_ROLES.md`.
  - Run the agents using your preferred workflow (for example `ts-node`). Currently no automated tests exist for this code.
 
-The repository uses Pester for testing PowerShell scripts. If any tests exist under the `tests/` directory, run them with `pwsh -Command Invoke-Pester` before committing. If Pester is not installed, install it via PowerShell's `Install-Module -Name Pester -Force`.
+The repository uses Pester for testing PowerShell scripts. Before running any tests or scripts, execute `src/Check-Dependencies.ps1` to confirm required modules are available. If any tests exist under the `tests/` directory, run them with `pwsh -Command "Invoke-Pester -Configuration (./.pester.ps1)"` before committing so coverage results are generated. If Pester is not installed, install it via PowerShell's `Install-Module -Name Pester -Force`.
 
 Pull request summaries should mention notable changes and reference any tests run.
 
 ## Changelog updates
 
-- Update `CHANGELOG.md` in every pull request.
-- Add a bullet under the `Unreleased` section describing the change.
-  Append it at the end of the list to reduce merge conflicts.
-- After the description, include the pull request number in parentheses.
-  Leave the number blank when opening the pull request, for example `(PR #)`.
-- The changelog can be updated again after the pull request is merged if needed.
+`CHANGELOG.md` is automatically generated from merged pull requests.
+Do not edit it manually in individual PRs.
 
 ## Dependencies
 
@@ -69,7 +64,7 @@ Most tools rely on several PowerShell modules. Ensure the following modules are 
 - `Microsoft.Graph`
 - `ActiveDirectory` (requires RSAT tools)
 
-Run `src/Check-Dependencies.ps1` to verify that your environment meets these requirements.
+Run `src/Check-Dependencies.ps1` before running tests or scripts to verify that your environment meets these requirements.
 
 ## Background Thread Jobs
 
