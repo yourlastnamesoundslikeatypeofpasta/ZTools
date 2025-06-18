@@ -36,6 +36,7 @@ The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell ut
 - [ExchangeOnlineManagement](https://www.powershellgallery.com/packages/ExchangeOnlineManagement)
 - [Microsoft.Graph](https://www.powershellgallery.com/packages/Microsoft.Graph)
 - [ActiveDirectory](https://www.powershellgallery.com/packages/ActiveDirectory) (requires RSAT)
+- [Microsoft.PowerShell.SecretManagement](https://www.powershellgallery.com/packages/Microsoft.PowerShell.SecretManagement)
 
 ## Getting Started
 

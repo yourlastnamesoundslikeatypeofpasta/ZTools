@@ -3,7 +3,7 @@ Describe 'Check-Dependencies script' {
         $scriptPath = Join-Path $PSScriptRoot '..' 'src' 'Check-Dependencies.ps1'
         $result = & $scriptPath
 
-        $expected = 'Pester','PnP.PowerShell','ExchangeOnlineManagement','Microsoft.Graph','ActiveDirectory'
+        $expected = 'Pester','PnP.PowerShell','ExchangeOnlineManagement','Microsoft.Graph','ActiveDirectory','Microsoft.PowerShell.SecretManagement'
         foreach ($mod in $expected) {
             ($result | Where-Object { $_.Check -eq $mod }).Count | Should -Be 1
         }
