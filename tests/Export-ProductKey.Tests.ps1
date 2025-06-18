@@ -35,4 +35,20 @@ Describe 'Export-ProductKey function' {
         Export-ProductKey -OutputPath $path -WhatIf
         Assert-MockCalled -CommandName Set-Content -Times 0
     }
+    It 'creates transcript when path provided' {
+        $path = Join-Path $TestDrive 'transKey.txt'
+        $tpath = Join-Path $TestDrive 'trans.log'
+        Export-ProductKey -OutputPath $path -TranscriptPath $tpath
+        Assert-MockCalled -CommandName Start-Transcript -Times 1 -ParameterFilter { $Path -eq $tpath }
+        Assert-MockCalled -CommandName Stop-Transcript -Times 1
+    }
+
+    It 'throws and logs when Set-Content fails' {
+        Mock Set-Content { throw "fail" }
+        Mock Write-Error {}
+        $path = Join-Path $TestDrive 'fail.txt'
+        { Export-ProductKey -OutputPath $path } | Should -Throw
+        Assert-MockCalled -CommandName Write-Error -Times 1
+    }
+
 }
