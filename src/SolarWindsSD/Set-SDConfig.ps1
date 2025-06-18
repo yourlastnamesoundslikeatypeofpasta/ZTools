@@ -25,7 +25,8 @@ function Set-SDConfig {
         $ztPath         = Join-Path -Path $rootPath -ChildPath 'ZtCore/ZtEntity.ps1'
         . $writeStatusPath
         if (-not ('ZtEntity' -as [type])) { . $ztPath }
-        Import-Module CredentialManager -ErrorAction Stop
+        # Use SecretManagement/SecretStore for cross-platform credential storage
+        Import-Module Microsoft.PowerShell.SecretManagement -ErrorAction Stop
     }
     process {
         if (-not $BaseUrl) {
@@ -35,8 +36,14 @@ function Set-SDConfig {
             $ApiToken = Read-Host -Prompt 'Enter API token'
         }
         try {
-            New-StoredCredential -Target 'ZTools.SolarWindsSD.BaseUrl' -Type Generic -UserName 'BaseUrl' -Password $BaseUrl -Persist LocalMachine | Out-Null
-            New-StoredCredential -Target 'ZTools.SolarWindsSD.ApiToken' -Type Generic -UserName 'ApiToken' -Password $ApiToken -Persist LocalMachine | Out-Null
+            # Store the base URL as a credential in the SecretStore
+            $baseUrlCred = [pscredential]::new('BaseUrl', (ConvertTo-SecureString $BaseUrl -AsPlainText -Force))
+            Set-Secret -Name 'ZTools.SolarWindsSD.BaseUrl' -Secret $baseUrlCred
+
+            # Store the API token securely in the SecretStore
+            $apiTokenCred = [pscredential]::new('ApiToken', (ConvertTo-SecureString $ApiToken -AsPlainText -Force))
+            Set-Secret -Name 'ZTools.SolarWindsSD.ApiToken' -Secret $apiTokenCred
+
             Write-Status -Level SUCCESS -Message 'SolarWinds Service Desk configuration stored.' -Fast
             $props = @{ BaseUrl = $BaseUrl }
             return [ZtEntity]::new('SolarWindsSD','Config','Default',$props)

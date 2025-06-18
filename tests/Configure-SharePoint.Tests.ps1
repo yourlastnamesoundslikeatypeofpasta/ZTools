@@ -13,9 +13,9 @@ Describe 'Set-SharePointConfig function' {
     }
 
     BeforeEach {
-        function New-StoredCredential {}
+        function Set-Secret {}
         function Import-Module {}
-        Mock New-StoredCredential {}
+        Mock Set-Secret {}
         Mock Import-Module {}
     }
 
@@ -23,7 +23,7 @@ Describe 'Set-SharePointConfig function' {
         $sec = ConvertTo-SecureString 'pass' -AsPlainText -Force
         $cred = [pscredential]::new('user',$sec)
         Set-SharePointConfig -TenantId 'tenant' -ClientCredential $cred -UserCredential $cred
-        Assert-MockCalled -CommandName New-StoredCredential -Times 3
+        Assert-MockCalled -CommandName Set-Secret -Times 3
     }
 
     It 'prompts for missing values' {
@@ -39,7 +39,7 @@ Describe 'Set-SharePointConfig function' {
     It 'logs error when credential storage fails' {
         $sec = ConvertTo-SecureString 'pass' -AsPlainText -Force
         $cred = [pscredential]::new('user',$sec)
-        Mock New-StoredCredential { throw 'fail' }
+        Mock Set-Secret { throw 'fail' }
         Mock Write-Status {}
         { Set-SharePointConfig -TenantId 'tenant' -ClientCredential $cred -UserCredential $cred } | Should -Throw
         Assert-MockCalled -CommandName Write-Status -ParameterFilter { $Level -eq 'ERROR' } -Times 1
