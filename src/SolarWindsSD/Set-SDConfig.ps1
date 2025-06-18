@@ -4,7 +4,7 @@ function Set-SDConfig {
         Stores SolarWinds Service Desk configuration.
     .DESCRIPTION
         Prompts for the base URL and API token or accepts them via parameters.
-        The values are saved in Windows Credential Manager under
+        The values are saved in a SecretManagement vault (SecretStore) under
         'ZTools.SolarWindsSD.BaseUrl' and 'ZTools.SolarWindsSD.ApiToken'.
     .PARAMETER BaseUrl
         Base URL of the Service Desk instance (e.g. https://api.samanage.com).
@@ -27,6 +27,20 @@ function Set-SDConfig {
         if (-not ('ZtEntity' -as [type])) { . $ztPath }
         # Use SecretManagement/SecretStore for cross-platform credential storage
         Import-Module Microsoft.PowerShell.SecretManagement -ErrorAction Stop
+
+        # Ensure a default vault exists so secrets can be saved
+        if (-not (Get-SecretVault -ErrorAction SilentlyContinue)) {
+            if (-not (Get-Module -ListAvailable Microsoft.PowerShell.SecretStore)) {
+                Write-Status -Level ERROR -Message 'Microsoft.PowerShell.SecretStore module not found.' -Fast
+                throw 'SecretStore module is required but not installed.'
+            }
+
+            if (-not (Get-SecretVault -Name 'SecretStore' -ErrorAction SilentlyContinue)) {
+                Register-SecretVault -Name 'SecretStore' -ModuleName Microsoft.PowerShell.SecretStore -DefaultVault -ErrorAction Stop
+            } else {
+                Set-SecretVaultDefault -Name 'SecretStore'
+            }
+        }
     }
     process {
         if (-not $BaseUrl) {
