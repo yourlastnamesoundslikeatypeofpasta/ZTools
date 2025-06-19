@@ -6,8 +6,10 @@ Checks the PowerShell version and required modules.
 `Check-Dependencies.ps1` loads `Write-Status.ps1` and verifies that the
 current session is running PowerShell 7 or later. It then checks for the
 presence of several required modules including `Pester`, `PnP.PowerShell`,
-`ExchangeOnlineManagement`, `Microsoft.Graph`, `ActiveDirectory`, and
-`Microsoft.PowerShell.SecretManagement`. Status
+`ExchangeOnlineManagement`, `Microsoft.Graph`, `ActiveDirectory`,
+`Microsoft.PowerShell.SecretManagement`, and `Microsoft.PowerShell.SecretStore`.
+If a module is missing the script attempts to install it automatically before
+reporting the final status. Status
 messages are written for each check so missing modules or an insufficient
 PowerShell version are clearly reported.
 
@@ -76,6 +78,16 @@ function Test-RequiredModules {
             Start-ThreadJob -ScriptBlock {
                 param($m)
                 try {
+                    if (-not (Get-Module -ListAvailable -Name $m)) {
+                        if (Get-Command -Name Install-Module -ErrorAction SilentlyContinue) {
+                            try {
+                                Install-Module -Name $m -Scope CurrentUser -Force -ErrorAction Stop | Out-Null
+                            } catch {
+                                # ignore install failure; handled below
+                            }
+                        }
+                    }
+
                     if (Get-Module -ListAvailable -Name $m) {
                         [PSCustomObject]@{
                             Check   = $m
@@ -136,7 +148,8 @@ function Test-DependencyState {
             'ExchangeOnlineManagement',
             'Microsoft.Graph',
             'ActiveDirectory',
-            'Microsoft.PowerShell.SecretManagement'
+            'Microsoft.PowerShell.SecretManagement',
+            'Microsoft.PowerShell.SecretStore'
         )
         $moduleResults = $requiredModules | Test-RequiredModules
         $result += $moduleResults
