@@ -92,3 +92,13 @@ $job = Get-Job | Where Name -eq ThreadJob  # or capture the returned job
 $job | Wait-Job
 $items = $job | Receive-Job
 ```
+
+## Release process
+
+- Use [Semantic Versioning](https://semver.org/) for all modules.
+- Each module should have a `.psd1` manifest with `ModuleVersion` starting at `0.1.0`.
+- Include a `.VERSION` tag in comment-based help for each function.
+- Increment the major version for breaking changes, minor for new features, and patch for fixes.
+- Bump versions in the same pull request that introduces the change and ensure the PR description reflects these updates.
+- `CHANGELOG.md` is generated from pull request titles, so keep them descriptive.
+- After merging to `main`, tag the repository with the module version to mark the release.
