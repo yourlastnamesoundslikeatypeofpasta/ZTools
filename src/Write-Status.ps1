@@ -178,8 +178,6 @@ function global:Write-Status {
 
         [switch]$Fast
     )
-
-    process {
         $currentHour = Get-Date -Format 'yyyy-MM-dd_HH'
         if ($PSBoundParameters.ContainsKey('LogFile')) {
             if ($LogFile -ne $script:StatusLogFile) {
@@ -240,5 +238,4 @@ function global:Write-Status {
                 }
             }
         }
-    }
 }
