@@ -48,6 +48,7 @@ The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell ut
 2. **Browse the tools**
    - PowerShell scripts are under `src/`
    - TypeScript agents are under `agents/`
+   - The `PdfTools` module provides `Start-PdfRenameWatcher` for automatic PDF renaming.
 3. **Load the modules**
    Run `Install-ZTools.ps1` to import all scripts or import the `ZTools` module manifest. Optionally provide a configuration script:
    ```powershell
