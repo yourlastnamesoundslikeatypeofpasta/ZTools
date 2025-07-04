@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![codecov](https://codecov.io/gh/yourlastnamesoundslikeatypeofpasta/ZTools/branch/main/graph/badge.svg)](https://codecov.io/gh/yourlastnamesoundslikeatypeofpasta/ZTools)
 
-ZTools is a collection of PowerShell utilities and experimental TypeScript agents used for automation tasks. The repository is currently a skeleton that will be populated with organized tools over time.
+ZTools is a comprehensive collection of PowerShell utilities and experimental TypeScript agents used for automation tasks. The repository contains organized tools for Active Directory management, Microsoft 365 administration, system monitoring, and more.
 
 ## Project Goals
 
@@ -16,18 +16,36 @@ ZTools is a collection of PowerShell utilities and experimental TypeScript agent
 ```
 ZTools/
 ├── src/           # PowerShell scripts and modules
+│   ├── ActiveDirectory/     # Active Directory management tools
+│   ├── EntraID/            # Microsoft Entra ID (Azure AD) tools
+│   ├── ExchangeOnline/     # Exchange Online management
+│   ├── MicrosoftGraph/     # Microsoft Graph API tools
+│   ├── MonitoringTools/    # System monitoring utilities
+│   ├── PdfTools/          # PDF processing tools
+│   ├── PnP/               # SharePoint PnP tools
+│   ├── SolarWindsSD/      # SolarWinds Service Desk integration
+│   ├── SupportTools/      # General support utilities
+│   ├── ZtCore/            # Core framework components
+│   ├── ZTools/            # Main module manifest
+│   ├── Check-Dependencies.ps1
+│   ├── Configure-SharePoint.ps1
+│   ├── Install-ZTools.ps1
+│   ├── Show-ImportBanner.ps1
+│   ├── Test-IsAdministrator.ps1
+│   └── Write-Status.ps1
 ├── agents/        # TypeScript agent scripts
-├── scripts/       # Helper PowerShell scripts
 ├── docs/          # Additional documentation
 ├── tests/         # Pester tests
-├── AGENTS.md      # Contribution guidelines
+├── logs/          # Log files
+├── notes/         # Project notes
+├── AGENTS.md      # Agent contribution guidelines
 ├── CHANGELOG.md   # Release history
 ├── LICENSE        # MIT License
 └── README.md      # Project documentation
 ```
 
 *This layout may evolve as more tools are added.*
-The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell utilities, `scripts/` contains automation helpers, and `tests/` holds Pester tests.
+The `agents/` folder hosts TypeScript code, `src/` contains PowerShell utilities organized by functionality, and `tests/` holds Pester tests.
 
 ## Prerequisites
 
@@ -46,13 +64,22 @@ The `agents/` folder hosts TypeScript code, `src/` is reserved for PowerShell ut
    cd ZTools
    ```
 2. **Browse the tools**
-   - PowerShell scripts are under `src/`
+   - PowerShell scripts are organized in `src/` by functionality:
+     - `ActiveDirectory/` - AD management tools
+     - `EntraID/` - Microsoft Entra ID (Azure AD) tools
+     - `ExchangeOnline/` - Exchange Online management
+     - `MicrosoftGraph/` - Microsoft Graph API tools
+     - `MonitoringTools/` - System monitoring utilities
+     - `PdfTools/` - PDF processing tools (includes `Start-PdfRenameWatcher`)
+     - `PnP/` - SharePoint PnP tools
+     - `SolarWindsSD/` - SolarWinds Service Desk integration
+     - `SupportTools/` - General support utilities
+     - `ZtCore/` - Core framework components
    - TypeScript agents are under `agents/`
-   - The `PdfTools` module provides `Start-PdfRenameWatcher` for automatic PDF renaming.
 3. **Load the modules**
    Run `Install-ZTools.ps1` to import all scripts or import the `ZTools` module manifest. Optionally provide a configuration script:
    ```powershell
-   ./src/Install-ZTools.ps1 -ConfigScript ./scripts/Configure-SharePoint.ps1
+   ./src/Install-ZTools.ps1 -ConfigScript ./src/Configure-SharePoint.ps1
    # or
    Import-Module ./src/ZTools/ZTools.psd1
    ```
