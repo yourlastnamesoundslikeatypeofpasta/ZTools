@@ -109,7 +109,7 @@ function Start-PdfRenameWatcher {
                 $script:ProcessedFiles[$file] = Get-Date
                 
                 try {
-                    Process-PdfFile -FilePath $file -OpenAIKey $OpenAIKey -Model $Model -MaxFileSizeBytes $script:MaxFileSizeBytes -RetryCount $RetryCount -RetryDelaySeconds $RetryDelaySeconds
+                    Invoke-PdfFileProcessing -FilePath $file -OpenAIKey $OpenAIKey -Model $Model -MaxFileSizeBytes $script:MaxFileSizeBytes -RetryCount $RetryCount -RetryDelaySeconds $RetryDelaySeconds
                 }
                 catch {
                     Write-Status -Level ERROR -Message "Error processing file '$file': $($_.Exception.Message)"
@@ -127,7 +127,7 @@ function Start-PdfRenameWatcher {
             # Setup graceful shutdown
             $null = Register-EngineEvent -SourceIdentifier ([System.Management.Automation.PsEngineEvent]::Exiting) -Action {
                 $script:IsRunning = $false
-                Cleanup-Resources
+                Remove-Resources
             }
 
             Write-Status -Level SUCCESS -Message "PDF Rename Watcher started successfully"
@@ -152,12 +152,12 @@ function Start-PdfRenameWatcher {
             Write-Status -Level ERROR -Message "Fatal error: $($_.Exception.Message)"
         }
         finally {
-            Cleanup-Resources
+            Remove-Resources
         }
     }
 }
 
-function Process-PdfFile {
+function Invoke-PdfFileProcessing {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
@@ -187,7 +187,7 @@ function Process-PdfFile {
 
     # Upload file with retry logic
     $fileId = Invoke-WithRetry -ScriptBlock {
-        Upload-OpenAIFile -Path $FilePath -ApiKey $OpenAIKey
+        Send-OpenAIFile -Path $FilePath -ApiKey $OpenAIKey
     } -RetryCount $RetryCount -RetryDelaySeconds $RetryDelaySeconds -Operation "Upload"
 
     if (-not $fileId) {
@@ -207,14 +207,14 @@ function Process-PdfFile {
         }
 
         # Clean and validate filename
-        $cleanName = Get-CleanFileName -Name $newName
+        $cleanName = ConvertTo-CleanFileName -Name $newName
         if (-not $cleanName) {
             Write-Status -Level ERROR -Message "Generated filename is invalid or empty"
             return
         }
 
         # Generate unique filename if needed
-        $finalName = Get-UniqueFileName -BaseName $cleanName -Directory (Split-Path $FilePath -Parent)
+        $finalName = New-UniqueFileName -BaseName $cleanName -Directory (Split-Path $FilePath -Parent)
         $destination = Join-Path -Path (Split-Path $FilePath -Parent) -ChildPath "$finalName.pdf"
 
         # Rename file
@@ -274,7 +274,7 @@ function Test-OpenAIConnection {
     }
 }
 
-function Upload-OpenAIFile {
+function Send-OpenAIFile {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
@@ -365,7 +365,7 @@ function Remove-OpenAIFile {
     }
 }
 
-function Get-CleanFileName {
+function ConvertTo-CleanFileName {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
@@ -394,7 +394,7 @@ function Get-CleanFileName {
     return $Name
 }
 
-function Get-UniqueFileName {
+function New-UniqueFileName {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
@@ -450,7 +450,7 @@ function Invoke-WithRetry {
     return $null
 }
 
-function Cleanup-Resources {
+function Remove-Resources {
     if ($script:EventJob) {
         Unregister-Event -SourceIdentifier PdfCreated -ErrorAction SilentlyContinue
         Remove-Job -Name PdfCreated -ErrorAction SilentlyContinue
